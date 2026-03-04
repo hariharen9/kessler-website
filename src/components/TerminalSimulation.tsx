@@ -57,23 +57,23 @@ const TerminalSimulation = () => {
   ];
 
   return (
-    <div className="w-full max-w-5xl mx-auto mt-16 relative group">
+    <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-16 relative group px-2 sm:px-0">
       {/* Terminal Header */}
-      <div className="bg-[#1a1b26] rounded-t-xl border-x border-t border-white/10 p-4 flex items-center justify-between shadow-2xl transition-colors group-hover:border-primary/30">
-        <div className="flex gap-2">
-          <div className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] shadow-lg shadow-red-500/20" />
-          <div className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] shadow-lg shadow-yellow-500/20" />
-          <div className="w-3.5 h-3.5 rounded-full bg-[#27c93f] shadow-lg shadow-green-500/20" />
+      <div className="bg-[#1a1b26] rounded-t-xl border-x border-t border-white/10 p-3 sm:p-4 flex items-center justify-between shadow-2xl transition-colors group-hover:border-primary/30">
+        <div className="flex gap-1.5 sm:gap-2">
+          <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#ff5f56] shadow-lg shadow-red-500/20" />
+          <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#ffbd2e] shadow-lg shadow-yellow-500/20" />
+          <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#27c93f] shadow-lg shadow-green-500/20" />
         </div>
-        <div className="text-[11px] text-muted-foreground font-mono uppercase tracking-[0.2em] flex items-center gap-3">
-          <TerminalIcon className="w-3.5 h-3.5 text-primary/70" />
+        <div className="text-[9px] sm:text-[11px] text-muted-foreground font-mono uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center gap-2 sm:gap-3">
+          <TerminalIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary/70" />
           kessler — tui — 120x40
         </div>
-        <div className="w-16" />
+        <div className="w-10 sm:w-16" />
       </div>
 
       {/* Terminal Body */}
-      <div className="bg-[#0b0d13] rounded-b-xl border border-white/10 p-8 font-mono text-sm shadow-2xl relative overflow-hidden min-h-[500px] transition-colors group-hover:border-primary/20">
+      <div className="bg-[#0b0d13] rounded-b-xl border border-white/10 p-4 sm:p-8 font-mono text-[10px] sm:text-sm shadow-2xl relative overflow-hidden min-h-[400px] sm:min-h-[500px] transition-colors group-hover:border-primary/20">
         {/* TUI Header Tabs */}
         <div className="flex gap-6 mb-8 border-b border-white/5 pb-3">
           <button 
@@ -103,58 +103,58 @@ const TerminalSimulation = () => {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              className="grid grid-cols-12 gap-10"
+              className="grid grid-cols-12 gap-6 lg:gap-10"
             >
               {/* Projects Main View */}
               <div className="col-span-12 lg:col-span-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <span className="text-primary bg-primary/10 px-3 py-1 rounded text-xs font-bold border border-primary/20 tracking-wider">🚀 KESSLER ENGINE</span>
+                <div className="flex items-center gap-3 mb-4 sm:mb-6">
+                  <span className="text-primary bg-primary/10 px-2 py-0.5 sm:px-3 sm:py-1 rounded text-[10px] sm:text-xs font-bold border border-primary/20 tracking-wider">🚀 KESSLER ENGINE</span>
                 </div>
 
-                <div className="text-muted-foreground mb-8 flex items-center gap-3 bg-white/5 p-3 rounded-lg border border-white/5">
+                <div className="text-muted-foreground mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3 bg-white/5 p-2 sm:p-3 rounded-lg border border-white/5">
                   <span className="text-primary font-bold">{">"}</span>
                   {step === 0 ? (
-                    <span className="animate-pulse flex items-center gap-2">
-                      <Search className="w-4 h-4" /> Scanning deep orbit... {progress}%
+                    <span className="animate-pulse flex items-center gap-2 text-[10px] sm:text-xs">
+                      <Search className="w-3 h-3 sm:w-4 sm:h-4" /> Scanning... {progress}%
                     </span>
                   ) : (
-                    <span className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-green-400" /> Found 12 targets | Total Debris: <span className="text-accent font-bold">4.2 GB</span>
+                    <span className="flex items-center gap-2 text-[10px] sm:text-xs truncate">
+                      <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" /> Found 12 targets | <span className="text-accent font-bold">4.2 GB</span>
                     </span>
                   )}
                 </div>
 
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   {projects.map((p, i) => (
                     <motion.div
                       key={p.name}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: step >= 1 ? 1 : 0, x: step >= 1 ? 0 : -10 }}
                       transition={{ delay: i * 0.1 }}
-                      className={`flex items-center gap-4 p-2.5 rounded-md transition-all ${i === 0 && step >= 1 ? "bg-primary/10 border border-primary/20" : "border border-transparent hover:bg-white/5"}`}
+                      className={`flex items-center gap-2 sm:gap-4 p-2 sm:p-2.5 rounded-md transition-all ${i === 0 && step >= 1 ? "bg-primary/10 border border-primary/20" : "border border-transparent"}`}
                     >
-                      <span className="text-primary/60 text-xs w-4">{i === 0 ? "→" : " "}</span>
-                      <span className="text-primary/40">[ ]</span>
+                      <span className="text-primary/60 text-[10px] w-3">{i === 0 ? "→" : " "}</span>
+                      <span className="text-primary/40 hidden sm:inline">[ ]</span>
                       <span className="text-green-400/80">
-                        <Box className="w-4 h-4" />
+                        <Box className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </span>
-                      <span className="flex-1 text-foreground/90 font-medium">{p.name} <span className="text-[10px] text-primary/40 font-mono ml-2">{p.artifact}</span></span>
-                      <span className="text-muted-foreground/30 text-xs hidden sm:inline">[{p.time}] — {p.type}</span>
-                      <span className="text-muted-foreground/80 font-bold w-20 text-right">{p.size}</span>
+                      <span className="flex-1 text-foreground/90 font-medium truncate text-[11px] sm:text-sm">
+                        {p.name} <span className="text-[9px] text-primary/40 font-mono ml-1 hidden sm:inline">{p.artifact}</span>
+                      </span>
+                      <span className="text-muted-foreground/80 font-bold text-[10px] sm:text-xs">{p.size}</span>
                     </motion.div>
                   ))}
                 </div>
 
-                <div className="mt-12 pt-6 border-t border-white/5 text-[11px] text-muted-foreground/50 flex flex-wrap gap-x-6 gap-y-3 uppercase tracking-widest font-bold">
-                  <span className="text-primary/60 hover:text-primary transition-colors cursor-default">↑/↓: Nav</span>
-                  <span className="text-primary/60 hover:text-primary transition-colors cursor-default">Space: Select</span>
-                  <span className="text-primary/60 hover:text-primary transition-colors cursor-default">A: Select All</span>
-                  <span className="text-accent/60 hover:text-accent transition-colors cursor-default">Enter: Cleanup</span>
+                <div className="mt-8 sm:mt-12 pt-4 sm:pt-6 border-t border-white/5 text-[9px] sm:text-[11px] text-muted-foreground/50 flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 uppercase tracking-widest font-bold">
+                  <span className="text-primary/60">↑/↓: Nav</span>
+                  <span className="text-primary/60 hidden sm:inline">Space: Select</span>
+                  <span className="text-accent/60">Enter: Cleanup</span>
                 </div>
               </div>
 
-              {/* Projects Sidebar */}
-              <div className="col-span-12 lg:col-span-4 space-y-8">
+              {/* Projects Sidebar - Hidden on mobile */}
+              <div className="hidden lg:block lg:col-span-4 space-y-8">
                 <div className="border border-white/10 rounded-xl p-5 bg-white/5 relative overflow-hidden group/card">
                   <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2" />
                   <div className="flex items-center gap-3 mb-4 text-xs font-bold text-foreground/90 uppercase tracking-widest">
@@ -264,19 +264,6 @@ const TerminalSimulation = () => {
                 </div>
               ))}
             </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Floating Scan Effect */}
-        <AnimatePresence>
-          {step === 0 && activeTab === 1 && (
-            <motion.div
-              initial={{ top: "0%" }}
-              animate={{ top: "100%" }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute left-0 right-0 h-px bg-primary/40 shadow-[0_0_15px_rgba(var(--primary),0.5)] z-20 pointer-events-none"
-            />
           )}
         </AnimatePresence>
       </div>

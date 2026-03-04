@@ -1,11 +1,32 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Terminal, Github, ArrowDown, Zap, Shield, Cpu, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TerminalSimulation from "./TerminalSimulation";
 
 const HeroSection = () => {
   const [copied, setCopied] = useState(false);
+
+  const mouseX = useMotionValue(0.5);
+  const mouseY = useMotionValue(0.5);
+
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  const glowX = useTransform(springX, [0, 1], ["-15%", "15%"]);
+  const glowY = useTransform(springY, [0, 1], ["-15%", "15%"]);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      mouseX.set(clientX / innerWidth);
+      mouseY.set(clientY / innerHeight);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [mouseX, mouseY]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText("npm install -g kessler");
@@ -14,7 +35,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center pt-32 pb-20 px-4 z-10">
+    <section className="relative min-h-screen flex flex-col items-center pt-24 sm:pt-32 pb-20 px-4 z-10">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -26,41 +47,47 @@ const HeroSection = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8"
+          className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 sm:px-4 sm:py-1.5 mb-6 sm:mb-8"
         >
-          <Sparkles className="w-3.5 h-3.5 text-primary animate-pulse" />
-          <span className="text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
+          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary animate-pulse" />
+          <span className="text-[8px] sm:text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
             Modern Cosmic Cleanup Engine
           </span>
         </motion.div>
 
         {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="text-6xl sm:text-8xl md:text-9xl font-bold tracking-tighter mb-6 leading-[0.85] uppercase"
-        >
-          <span className="text-gradient-hero">Kessler</span>
-        </motion.h1>
+        <div className="relative group mb-4 sm:mb-6">
+          <motion.div
+            style={{ x: glowX, y: glowY }}
+            className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
+          />
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="text-6xl sm:text-8xl md:text-9xl font-display font-light tracking-tight leading-[0.85] uppercase relative z-10"
+          >
+            <span className="text-gradient-hero">Kessler</span>
+          </motion.h1>
+        </div>
 
         {/* Bold Tagline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.8 }}
-          className="space-y-6 mb-10"
+          className="space-y-4 sm:space-y-6 mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter uppercase">
-            Stop drowning in <span className="text-primary">digital debris.</span>
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-cursive italic px-2 tracking-wide leading-tight">
+            Stop drowning in <br className="sm:hidden" /><span className="text-primary font-normal">digital debris.</span>
           </h2>
           
           {/* Hooking Tags */}
-          <div className="flex flex-wrap justify-center gap-3">
-            <span className="px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest">Blazingly Fast</span>
-            <span className="px-3 py-1 rounded-full border border-accent/30 bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest">Git-Aware</span>
-            <span className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[10px] font-black uppercase tracking-widest">Zero Risk</span>
-            <span className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[10px] font-black uppercase tracking-widest">10+ Ecosystems</span>
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 px-4">
+            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Blazingly Fast</span>
+            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-accent/30 bg-accent/10 text-accent text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Git-Aware</span>
+            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Zero Risk</span>
+            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">10+ Ecosystems</span>
           </div>
         </motion.div>
 
@@ -68,9 +95,9 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed font-medium"
+          className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 sm:mb-12 leading-relaxed font-medium px-4"
         >
-          The intelligent <span className="text-foreground">cosmic cleanup engine</span> that finds and safely sweeps away <span className="text-primary/90 font-mono">node_modules</span>, <span className="text-primary/90 font-mono">venv</span>, <span className="text-primary/90 font-mono">target/</span>, and bloated build caches — reclaiming your orbit in milliseconds.
+          The intelligent <span className="text-foreground">cosmic cleanup engine</span> that finds and safely sweeps away <span className="text-primary/90 font-bold">development artifacts</span> and <span className="text-primary/90 font-bold">100% regeneratable debris</span> — reclaiming your orbit in milliseconds.
         </motion.p>
 
         {/* CTA Buttons */}
@@ -78,17 +105,17 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 px-4"
         >
-          <Button variant="hero" size="xl" className="h-14 px-8 text-base group" asChild>
+          <Button variant="hero" size="xl" className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg group w-full sm:w-auto rounded-full" asChild>
             <a href="#install">
-              <Terminal className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              <Terminal className="w-5 h-5 sm:w-6 sm:h-6 mr-2 group-hover:translate-x-1 transition-transform" />
               Get Started
             </a>
           </Button>
-          <Button variant="hero-outline" size="xl" className="h-14 px-8 text-base" asChild>
+          <Button variant="hero-outline" size="xl" className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg w-full sm:w-auto rounded-full" asChild>
             <a href="https://github.com/hariharen9/kessler" target="_blank" rel="noopener noreferrer">
-              <Github className="w-5 h-5" />
+              <Github className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
               View on GitHub
             </a>
           </Button>

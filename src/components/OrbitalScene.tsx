@@ -11,7 +11,7 @@ const OrbitalScene = () => {
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
 
   // Camera & Earth Transforms
-  const scale = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], [1.6, 1.2, 0.95, 0.8, 0.7]);
+  const scale = useTransform(smoothProgress, [0, 0.25, 0.5, 0.75, 1], [1.8, 1.3, 1.1, 0.9, 0.8]);
   const earthOpacity = useTransform(smoothProgress, [0, 0.05], [0.9, 1]);
   const rotate = useTransform(smoothProgress, [0, 1], [0, 45]);
   
@@ -78,12 +78,12 @@ const OrbitalScene = () => {
 
         <motion.div
           style={{ scale, rotate }}
-          className="relative w-[600px] h-[600px] flex items-center justify-center"
+          className="relative w-[300px] h-[300px] sm:w-[600px] sm:h-[600px] flex items-center justify-center"
         >
           {/* Earth / Hard Drive */}
           <motion.div
             style={{ opacity: earthOpacity }}
-            className="absolute w-56 h-56 rounded-full"
+            className="absolute w-32 h-32 sm:w-56 sm:h-56 rounded-full"
           >
             {/* Atmospheric Glow */}
             <div className="absolute -inset-12 rounded-full bg-primary/20 blur-[60px] animate-pulse-glow" />
@@ -237,34 +237,34 @@ const OrbitalScene = () => {
         </motion.div>
 
         {/* Scroll text overlays */}
-        <div className="absolute inset-0 flex items-end justify-center pb-20 pointer-events-none z-20">
-          <div className="text-center space-y-2">
+        <div className="absolute inset-0 flex items-end justify-center pb-20 sm:pb-24 pointer-events-none z-20 px-4">
+          <div className="text-center space-y-2 w-full">
             <motion.p
               style={{ opacity: text1Opacity }}
-              className="text-primary/70 text-xs tracking-[0.4em] font-bold uppercase absolute bottom-20 left-1/2 -translate-x-1/2 whitespace-nowrap"
+              className="text-primary/70 text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.4em] font-bold uppercase absolute bottom-20 left-1/2 -translate-x-1/2 whitespace-nowrap"
             >
               ↓ Scroll to witness the Kessler Syndrome
             </motion.p>
             <motion.div
               style={{ opacity: text2Opacity }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full max-w-[280px] sm:max-w-none"
             >
-              <p className="text-2xl font-bold text-foreground tracking-tight">Orbit is getting crowded.</p>
-              <p className="text-sm text-muted-foreground mt-1">Just like your <code className="text-primary/80 bg-secondary/50 px-1.5 py-0.5 rounded text-xs font-mono">node_modules</code> and build caches.</p>
+              <p className="text-xl sm:text-2xl font-bold text-foreground tracking-tight">Orbit is getting crowded.</p>
+              <p className="text-[10px] sm:text-sm text-muted-foreground mt-1 px-4">Just like your artifacts and build caches.</p>
             </motion.div>
             <motion.div
               style={{ opacity: text3Opacity }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full max-w-[280px] sm:max-w-none"
             >
-              <p className="text-2xl font-bold text-accent tracking-tight underline decoration-accent/30 underline-offset-8">Collision. Debris everywhere.</p>
-              <p className="text-sm text-muted-foreground mt-2 font-medium">Your hard drive is choking on digital space junk.</p>
+              <p className="text-xl sm:text-2xl font-bold text-accent tracking-tight underline decoration-accent/30 underline-offset-8">Collision. Debris everywhere.</p>
+              <p className="text-[10px] sm:text-sm text-muted-foreground mt-2 font-medium px-4">Your hard drive is choking on space junk.</p>
             </motion.div>
             <motion.div
               style={{ opacity: text4Opacity }}
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center whitespace-nowrap"
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 text-center w-full max-w-[280px] sm:max-w-none"
             >
-              <p className="text-3xl font-black text-white tracking-tighter">KESSLER CLEARS THE ORBIT.</p>
-              <p className="text-sm text-primary font-bold mt-1 uppercase tracking-widest">Intelligent. Safe. Blazingly fast.</p>
+              <p className="text-2xl sm:text-3xl font-black text-white tracking-tighter">KESSLER CLEARS THE ORBIT.</p>
+              <p className="text-[10px] sm:text-sm text-primary font-bold mt-1 uppercase tracking-widest">Intelligent. Safe. Fast.</p>
             </motion.div>
           </div>
         </div>

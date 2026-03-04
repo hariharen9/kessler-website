@@ -72,13 +72,13 @@ const FooterSection = () => {
               transition={{ delay: 0.4 }}
               className="flex flex-col sm:flex-row gap-6 justify-center items-center"
             >
-              <Button variant="hero" size="xl" className="h-16 px-10 text-lg font-bold group w-full sm:w-auto" asChild>
+              <Button variant="hero" size="xl" className="h-16 px-10 text-lg font-bold group w-full sm:w-auto rounded-full" asChild>
                 <a href="#install">
                   <Terminal className="w-6 h-6 mr-2 group-hover:translate-x-1 transition-transform" />
                   Install Kessler
                 </a>
               </Button>
-              <Button variant="hero-outline" size="xl" className="h-16 px-10 text-lg font-bold w-full sm:w-auto" asChild>
+              <Button variant="hero-outline" size="xl" className="h-16 px-10 text-lg font-bold w-full sm:w-auto rounded-full" asChild>
                 <a href="https://github.com/hariharen9/kessler" target="_blank" rel="noopener noreferrer">
                   <Star className="w-6 h-6 mr-2" />
                   Star on GitHub

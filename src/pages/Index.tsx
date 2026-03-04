@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import OrbitalScene from "@/components/OrbitalScene";
 import FeaturesSection from "@/components/FeaturesSection";
+import GitIntelligence from "@/components/GitIntelligence";
 import EcosystemSection from "@/components/EcosystemSection";
 import InstallSection from "@/components/InstallSection";
 import SafetySection from "@/components/SafetySection";
@@ -16,6 +17,7 @@ const Index = () => {
       <HeroSection />
       <OrbitalScene />
       <FeaturesSection />
+      <GitIntelligence />
       <EcosystemSection />
       <InstallSection />
       <SafetySection />

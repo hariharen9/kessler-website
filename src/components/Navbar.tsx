@@ -3,6 +3,23 @@ import { Github, Star, Coffee } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
+  const scrollToSection = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const element = document.querySelector(id);
+    if (element) {
+      const offset = 100; // Account for floating header
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   return (
     <div className="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 pointer-events-none">
       <motion.nav
@@ -11,14 +28,14 @@ const Navbar = () => {
         transition={{ duration: 0.6 }}
         className="glass-strong border border-white/10 rounded-full px-6 h-14 flex items-center justify-between gap-8 max-w-fit shadow-[0_8px_32px_rgba(0,0,0,0.4)] pointer-events-auto"
       >
-        <a href="#" className="flex items-center gap-2 font-bold text-lg shrink-0">
+        <a href="#" onClick={(e) => scrollToSection(e, '#root')} className="flex items-center gap-2 font-bold text-lg shrink-0">
           <span className="text-xl">🛰️</span>
-          <span className="text-foreground font-display uppercase tracking-tight">Kessler</span>
+          <span className="text-foreground font-display uppercase tracking-tight text-base sm:text-lg">Kessler</span>
         </a>
 
         <div className="hidden sm:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <a href="#features" className="hover:text-primary transition-colors">Features</a>
-          <a href="#install" className="hover:text-primary transition-colors">Install</a>
+          <a href="#features" onClick={(e) => scrollToSection(e, '#features')} className="hover:text-primary transition-colors">Features</a>
+          <a href="#install" onClick={(e) => scrollToSection(e, '#install')} className="hover:text-primary transition-colors">Install</a>
           <a href="https://github.com/hariharen9/kessler#-usage" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Docs</a>
         </div>
 
@@ -36,7 +53,7 @@ const Navbar = () => {
             </a>
           </Button>
           <Button variant="default" size="sm" asChild className="h-9 rounded-full px-5 bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(var(--primary),0.3)]">
-            <a href="#install" className="font-bold">Get Started</a>
+            <a href="#install" onClick={(e) => scrollToSection(e, '#install')} className="font-bold">Get Started</a>
           </Button>
         </div>
       </motion.nav>

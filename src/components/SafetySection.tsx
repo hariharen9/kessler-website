@@ -1,22 +1,28 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { GitBranch, Lock, Trash2 } from "lucide-react";
+import { GitBranch, Lock, Trash2, ShieldCheck, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
 
 const pillars = [
   {
     icon: GitBranch,
-    title: "Respects Git",
-    description: "A folder named vendor/ might be junk in one project but committed source in another. If Git tracks it, Kessler ignores it.",
+    title: "The Git Safety Net",
+    description: "Before Kessler flags any folder, it queries 'git ls-files'. If a folder contains files actively tracked by version control, Kessler immediately aborts and ignores it.",
+    color: "text-primary",
+    bg: "bg-primary/10"
   },
   {
     icon: Lock,
-    title: "Respects State",
-    description: "Never targets lockfiles (package-lock.json, Cargo.lock) or environment secrets (.env). Your reproducibility is sacred.",
+    title: "Respects Build State",
+    description: "It never targets files required to reproduce a build (like package-lock.json or Cargo.lock) or environment secrets (.env). Your source is sacred.",
+    color: "text-accent",
+    bg: "bg-accent/10"
   },
   {
     icon: Trash2,
-    title: "Respects the OS",
-    description: "Moves files to Trash instead of permanent deletion. A mistaken sweep is an easy fix, not catastrophic data loss.",
+    title: "OS Trash Integration",
+    description: "Moves files to your native Trash/Recycle Bin instead of permanent deletion. A mistaken sweep is an easy fix, not a catastrophic data loss event.",
+    color: "text-green-400",
+    bg: "bg-green-400/10"
   },
 ];
 
@@ -25,23 +31,29 @@ const SafetySection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative z-10 py-32 px-4">
-      <div className="max-w-5xl mx-auto">
+    <section className="relative z-10 py-32 px-4 overflow-hidden">
+      {/* Decorative background effects */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="max-w-6xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-            Safety is <span className="text-gradient-accent">non-negotiable</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-[10px] font-black uppercase tracking-widest mb-6">
+            <ShieldCheck className="w-3 h-3" /> Security First
+          </div>
+          <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none mb-6">
+            Developer <span className="text-gradient-primary">Trust</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Built with developer trust as its core tenet. Three pillars protect your work.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto font-medium">
+            Kessler is built with a "Safe by Default" philosophy. We protect your work through three non-negotiable pillars.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
           {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
@@ -50,17 +62,83 @@ const SafetySection = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: i * 0.15, duration: 0.5 }}
-                className="glass-strong rounded-2xl p-8 text-center group hover:border-accent/30 transition-all duration-500"
+                className="glass-strong rounded-3xl p-8 group hover:border-white/20 transition-all duration-500 relative overflow-hidden"
               >
-                <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Icon className="w-8 h-8 text-accent" />
+                <div className={`w-14 h-14 rounded-2xl ${pillar.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <Icon className={`w-7 h-7 ${pillar.color}`} />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">{pillar.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{pillar.description}</p>
+                <h3 className="text-xl font-black uppercase tracking-tight text-foreground mb-4">{pillar.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed font-medium">{pillar.description}</p>
               </motion.div>
             );
           })}
         </div>
+
+        {/* Comparison Table */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="glass-strong rounded-[2.5rem] border border-white/10 overflow-hidden shadow-2xl"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            
+            {/* The Dangerous Way */}
+            <div className="p-10 border-b md:border-b-0 md:border-r border-white/5 bg-red-500/5">
+              <div className="flex items-center gap-3 text-red-400 mb-8">
+                <AlertCircle className="w-6 h-6" />
+                <span className="text-sm font-black uppercase tracking-widest">The Dangerous Way</span>
+              </div>
+              <div className="space-y-6">
+                <div className="font-mono text-sm bg-black/40 p-4 rounded-xl border border-red-500/20 text-red-200">
+                  $ rm -rf node_modules
+                </div>
+                <ul className="space-y-4">
+                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
+                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
+                    Irrecoverable permanent deletion
+                  </li>
+                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
+                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
+                    No context of project health
+                  </li>
+                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
+                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
+                    Blind to Git-tracked artifacts
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* The Kessler Way */}
+            <div className="p-10 bg-primary/5">
+              <div className="flex items-center gap-3 text-primary mb-8">
+                <CheckCircle2 className="w-6 h-6" />
+                <span className="text-sm font-black uppercase tracking-widest">The Kessler Way</span>
+              </div>
+              <div className="space-y-6">
+                <div className="font-mono text-sm bg-black/40 p-4 rounded-xl border border-primary/20 text-primary">
+                  $ kessler clean
+                </div>
+                <ul className="space-y-4">
+                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
+                    Safe move to native OS Trash
+                  </li>
+                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
+                    Context-aware rules engine
+                  </li>
+                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
+                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
+                    Git-aware safety checks
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </motion.div>
       </div>
     </section>
   );

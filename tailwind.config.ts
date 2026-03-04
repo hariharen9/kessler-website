@@ -14,9 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
-        display: ["Bricolage Grotesque", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        sans: ["Montserrat", "system-ui", "sans-serif"],
+        display: ["Cormorant Garamond", "serif"],
+        mono: ["Fira Code", "monospace"],
+        cursive: ["Playfair Display", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -1,13 +1,53 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Apple, Wind, Terminal, Package, Box, Download, ArrowRight } from "lucide-react";
+import { SiGo } from "react-icons/si";
 
 const installMethods = [
-  { label: "npm", command: "npm install -g kessler", alt: "npx kessler ~/Projects" },
-  { label: "Homebrew", command: "brew tap hariharen9/tap && brew install kessler" },
-  { label: "Go", command: "go install github.com/hariharen9/kessler@latest" },
-  { label: "Scoop", command: "scoop bucket add hariharen9 https://github.com/hariharen9/scoop-bucket && scoop install kessler" },
-  { label: "AUR", command: "yay -S kessler-bin" },
+  { 
+    id: "brew",
+    label: "Homebrew", 
+    icon: Apple,
+    command: "brew tap hariharen9/tap && brew install kessler",
+    platform: "macOS / Linux"
+  },
+  { 
+    id: "npm",
+    label: "NPM", 
+    icon: Package,
+    command: "npm install -g kessler", 
+    alt: "npx kessler ~/Projects",
+    platform: "Node.js (Cross-platform)"
+  },
+  { 
+    id: "go",
+    label: "Go", 
+    icon: SiGo,
+    command: "go install github.com/hariharen9/kessler@latest",
+    platform: "Developer (Go installed)"
+  },
+  { 
+    id: "scoop",
+    label: "Scoop", 
+    icon: Wind,
+    command: "scoop bucket add hariharen9 https://github.com/hariharen9/scoop-bucket && scoop install kessler",
+    platform: "Windows"
+  },
+  { 
+    id: "apt",
+    label: "Debian", 
+    icon: Box,
+    command: "sudo dpkg -i kessler_*.deb",
+    note: "Download .deb from releases",
+    platform: "Ubuntu / Debian"
+  },
+  { 
+    id: "aur",
+    label: "AUR", 
+    icon: Terminal,
+    command: "yay -S kessler-bin",
+    platform: "Arch Linux"
+  },
 ];
 
 const CopyButton = ({ text }: { text: string }) => {
@@ -18,8 +58,13 @@ const CopyButton = ({ text }: { text: string }) => {
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <button onClick={handleCopy} className="text-muted-foreground hover:text-primary transition-colors">
-      {copied ? <Check className="w-4 h-4 text-primary" /> : <Copy className="w-4 h-4" />}
+    <button 
+      onClick={handleCopy} 
+      className={`p-2 rounded-lg transition-all duration-300 border ${
+        copied ? "bg-primary/20 border-primary text-primary" : "bg-white/5 border-white/10 text-muted-foreground hover:text-primary hover:border-primary/50"
+      }`}
+    >
+      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
     </button>
   );
 };
@@ -30,92 +75,132 @@ const InstallSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="install" className="relative z-10 py-32 px-4">
-      <div className="max-w-3xl mx-auto">
+    <section id="install" className="relative z-10 py-32 px-4 overflow-hidden">
+      {/* Decorative background circle */}
+      <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
+      
+      <div className="max-w-5xl mx-auto">
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-5xl font-bold mb-4">
-            <span className="text-gradient-accent">Install</span> in seconds
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-accent text-[10px] font-black uppercase tracking-widest mb-6">
+            <Download className="w-3 h-3" /> Distribution
+          </div>
+          <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-none mb-6">
+            <span className="text-gradient-accent">Deploy</span> in seconds
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Available on every platform. Pick your weapon.
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+            Binary distribution for every major platform. Reclaim your space with zero friction.
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="glass-strong rounded-2xl overflow-hidden"
-        >
-          {/* Tabs */}
-          <div className="flex border-b border-border/50 overflow-x-auto">
-            {installMethods.map((method, i) => (
-              <button
-                key={method.label}
-                onClick={() => setActive(i)}
-                className={`px-5 py-3 text-sm font-medium transition-all whitespace-nowrap ${
-                  active === i
-                    ? "text-primary border-b-2 border-primary bg-primary/5"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {method.label}
-              </button>
-            ))}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Platform Selector */}
+          <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-2">
+            {installMethods.map((method, i) => {
+              const Icon = method.icon;
+              return (
+                <button
+                  key={method.id}
+                  onClick={() => setActive(i)}
+                  className={`flex items-center gap-4 px-5 py-4 rounded-2xl border transition-all duration-300 text-left group ${
+                    active === i
+                      ? "bg-accent/10 border-accent/30 text-accent shadow-lg shadow-accent/5"
+                      : "bg-white/5 border-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/10"
+                  }`}
+                >
+                  <div className={`p-2 rounded-xl transition-colors ${active === i ? "bg-accent/20 text-accent" : "bg-white/5 text-muted-foreground group-hover:text-foreground"}`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-black uppercase tracking-tight">{method.label}</div>
+                    <div className="text-[10px] opacity-60 font-medium">{method.platform}</div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
-          {/* Command */}
-          <div className="p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div className="font-mono text-sm">
-                <span className="text-primary mr-2">$</span>
-                <span className="text-foreground/90">{installMethods[active].command}</span>
+          {/* Code Terminal */}
+          <div className="lg:col-span-8 space-y-6">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="glass-strong rounded-3xl border border-white/10 overflow-hidden shadow-2xl"
+            >
+              {/* Terminal Header */}
+              <div className="bg-white/5 border-b border-white/5 px-6 py-4 flex items-center justify-between">
+                <div className="flex gap-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
+                </div>
+                <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
+                  Installation — {installMethods[active].label}
+                </div>
+                <div className="w-10" />
               </div>
-              <CopyButton text={installMethods[active].command} />
-            </div>
-            {installMethods[active].alt && (
-              <div className="mt-4 pt-4 border-t border-border/30 font-mono text-sm">
-                <span className="text-muted-foreground mr-2"># or use without installing</span>
-                <br />
-                <span className="text-primary mr-2">$</span>
-                <span className="text-foreground/90">{installMethods[active].alt}</span>
-              </div>
-            )}
-          </div>
-        </motion.div>
 
-        {/* Usage preview */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 glass rounded-2xl p-6"
-        >
-          <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider">Quick Start</p>
-          <div className="space-y-2 font-mono text-sm">
-            <div>
-              <span className="text-primary">$</span>{" "}
-              <span className="text-foreground/80">kessler ~/Projects</span>
-              <span className="text-muted-foreground ml-4"># Launch interactive TUI</span>
-            </div>
-            <div>
-              <span className="text-primary">$</span>{" "}
-              <span className="text-foreground/80">kessler scan ~/Projects --json</span>
-              <span className="text-muted-foreground ml-4"># CI mode with JSON</span>
-            </div>
-            <div>
-              <span className="text-primary">$</span>{" "}
-              <span className="text-foreground/80">kessler clean ~/Projects --dry-run</span>
-              <span className="text-muted-foreground ml-4"># Preview cleanup</span>
+              {/* Terminal Body */}
+              <div className="p-8 space-y-8">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="font-mono text-sm sm:text-base break-all">
+                      <span className="text-accent mr-3 select-none">$</span>
+                      <span className="text-foreground/90">{installMethods[active].command}</span>
+                    </div>
+                    <CopyButton text={installMethods[active].command} />
+                  </div>
+                  
+                  {installMethods[active].note && (
+                    <div className="text-[11px] text-accent/60 italic font-medium bg-accent/5 p-2 rounded-lg border border-accent/10 inline-block">
+                      Note: {installMethods[active].note}
+                    </div>
+                  )}
+                </div>
+
+                {(installMethods[active].alt) && (
+                  <div className="pt-8 border-t border-white/5 space-y-4">
+                    <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-black">Alternative / One-off Run</div>
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="font-mono text-sm sm:text-base break-all opacity-70">
+                        <span className="text-accent mr-3 select-none">$</span>
+                        <span className="text-foreground/90">{installMethods[active].alt}</span>
+                      </div>
+                      <CopyButton text={installMethods[active].alt || ""} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Quick Command Reference */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
+                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">Live TUI</div>
+                <code className="text-xs text-foreground/80 block mb-1">kessler ~/Projects</code>
+                <p className="text-[10px] text-muted-foreground">Interactive dashboard.</p>
+              </div>
+              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
+                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">CI Mode</div>
+                <code className="text-xs text-foreground/80 block mb-1">kessler scan --json</code>
+                <p className="text-[10px] text-muted-foreground">JSON output for automation.</p>
+              </div>
+              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
+                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">Deep Clean</div>
+                <code className="text-xs text-foreground/80 block mb-1">kessler . --deep</code>
+                <p className="text-[10px] text-muted-foreground">Include build outputs.</p>
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
