@@ -6,7 +6,9 @@ import FeaturesSection from "@/components/FeaturesSection";
 import GitIntelligence from "@/components/GitIntelligence";
 import EcosystemSection from "@/components/EcosystemSection";
 import InstallSection from "@/components/InstallSection";
+// import FAQSection from "@/components/FAQSection";
 import SafetySection from "@/components/SafetySection";
+import ComparisonChart from "@/components/ComparisonChart";
 import FooterSection from "@/components/FooterSection";
 
 const Index = () => {
@@ -20,7 +22,9 @@ const Index = () => {
       <GitIntelligence />
       <EcosystemSection />
       <InstallSection />
+      {/* <FAQSection /> */}
       <SafetySection />
+      <ComparisonChart />
       <FooterSection />
     </div>
   );

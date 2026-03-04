@@ -65,7 +65,7 @@ const TerminalSimulation = () => {
           <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#ffbd2e] shadow-lg shadow-yellow-500/20" />
           <div className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 rounded-full bg-[#27c93f] shadow-lg shadow-green-500/20" />
         </div>
-        <div className="text-[9px] sm:text-[11px] text-muted-foreground font-mono uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center gap-2 sm:gap-3">
+        <div className="text-[9px] sm:text-[11px] text-muted-foreground uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center gap-2 sm:gap-3" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           <TerminalIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary/70" />
           kessler — tui — 120x40
         </div>
@@ -73,7 +73,7 @@ const TerminalSimulation = () => {
       </div>
 
       {/* Terminal Body */}
-      <div className="bg-[#0b0d13] rounded-b-xl border border-white/10 p-4 sm:p-8 font-mono text-[10px] sm:text-sm shadow-2xl relative overflow-hidden min-h-[400px] sm:min-h-[500px] transition-colors group-hover:border-primary/20">
+      <div className="bg-[#0b0d13] rounded-b-xl border border-white/10 p-4 sm:p-8 text-[10px] sm:text-sm shadow-2xl relative overflow-hidden min-h-[400px] sm:min-h-[500px] transition-colors group-hover:border-primary/20" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
         {/* TUI Header Tabs */}
         <div className="flex gap-6 mb-8 border-b border-white/5 pb-3">
           <button 

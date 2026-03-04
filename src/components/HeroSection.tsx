@@ -78,8 +78,8 @@ const HeroSection = () => {
           transition={{ delay: 0.5, duration: 0.8 }}
           className="space-y-4 sm:space-y-6 mb-8 sm:mb-10"
         >
-          <h2 className="text-3xl sm:text-5xl md:text-6xl font-cursive italic px-2 tracking-wide leading-tight">
-            Stop drowning in <br className="sm:hidden" /><span className="text-primary font-normal">digital debris.</span>
+          <h2 className="text-2xl sm:text-4xl md:text-5xl px-2 tracking-wide leading-tight" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
+            Stop drowning in<br className="sm:hidden" /> <span className="text-primary font-normal">digital debris.</span>
           </h2>
           
           {/* Hooking Tags */}
