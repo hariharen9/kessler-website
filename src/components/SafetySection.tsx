@@ -74,7 +74,7 @@ const SafetySection = () => {
           })}
         </div>
 
-        {/* Comparison Table */}
+        {/* Git-Aware Safety Showcase */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
@@ -83,62 +83,66 @@ const SafetySection = () => {
         >
           <div className="grid grid-cols-1 md:grid-cols-2">
             
-            {/* The Dangerous Way */}
+            {/* The Blind Way */}
             <div className="p-10 border-b md:border-b-0 md:border-r border-white/5 bg-red-500/5">
               <div className="flex items-center gap-3 text-red-400 mb-8">
                 <AlertCircle className="w-6 h-6" />
-                <span className="text-sm font-black uppercase tracking-widest">The Dangerous Way</span>
+                <span className="text-sm font-black uppercase tracking-widest">Generic Cleanup Tool</span>
               </div>
               <div className="space-y-6">
-                <div className="font-mono text-sm bg-black/40 p-4 rounded-xl border border-red-500/20 text-red-200">
-                  $ rm -rf node_modules
+                <div className="font-mono text-[11px] sm:text-xs bg-black/40 p-5 rounded-xl border border-red-500/20 text-red-200/80 leading-relaxed min-h-[160px]">
+                  <div className="flex gap-2">
+                    <span className="text-red-500/50">$</span>
+                    <span>blind-tool clean .</span>
+                  </div>
+                  <div className="mt-4 space-y-1">
+                    <motion.div animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 1 }} className="text-red-400">DELETING bin/kessler.exe ...</motion.div>
+                    <div className="text-red-400">DELETING dist/index.js ...</div>
+                    <div className="text-red-500 font-bold mt-2 underline">CRITICAL: bin/kessler.exe was tracked by Git!</div>
+                    <div className="text-red-500/60 italic">Error: Source file lost. No recovery.</div>
+                  </div>
                 </div>
-                <ul className="space-y-4">
-                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
-                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
-                    Irrecoverable permanent deletion
-                  </li>
-                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
-                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
-                    No context of project health
-                  </li>
-                  <li className="flex gap-3 text-sm text-red-200/60 font-medium">
-                    <XCircle className="w-5 h-5 shrink-0 text-red-500/40" />
-                    Blind to Git-tracked artifacts
-                  </li>
-                </ul>
+                <p className="text-xs text-red-200/40 font-medium text-center uppercase tracking-widest">Generic scripts lack context.</p>
               </div>
             </div>
 
             {/* The Kessler Way */}
             <div className="p-10 bg-primary/5">
               <div className="flex items-center gap-3 text-primary mb-8">
-                <CheckCircle2 className="w-6 h-6" />
-                <span className="text-sm font-black uppercase tracking-widest">The Kessler Way</span>
+                <ShieldCheck className="w-6 h-6" />
+                <span className="text-sm font-black uppercase tracking-widest">Kessler Git Safety Net</span>
               </div>
               <div className="space-y-6">
-                <div className="font-mono text-sm bg-black/40 p-4 rounded-xl border border-primary/20 text-primary">
-                  $ kessler clean
+                <div className="font-mono text-[11px] sm:text-xs bg-black/40 p-5 rounded-xl border border-primary/20 text-primary/80 leading-relaxed min-h-[160px]">
+                  <div className="flex gap-2">
+                    <span className="text-primary/50">$</span>
+                    <span>kessler clean .</span>
+                  </div>
+                  <div className="mt-4 space-y-1">
+                    <div className="text-muted-foreground/60">{">"} git ls-files --cached --others</div>
+                    <motion.div 
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-green-400 font-bold flex items-center gap-2"
+                    >
+                      <CheckCircle2 className="w-3 h-3" /> PROTECTED: bin/kessler.exe (Git Tracked)
+                    </motion.div>
+                    <div className="text-primary">TRASHING node_modules/ ...</div>
+                    <div className="text-green-400/60 mt-2 font-black">SCAN COMPLETE: 0 Tracked Files Touched.</div>
+                  </div>
                 </div>
-                <ul className="space-y-4">
-                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
-                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
-                    Safe move to native OS Trash
-                  </li>
-                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
-                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
-                    Context-aware rules engine
-                  </li>
-                  <li className="flex gap-3 text-sm text-primary/80 font-medium">
-                    <CheckCircle2 className="w-5 h-5 shrink-0 text-primary/60" />
-                    Git-aware safety checks
-                  </li>
-                </ul>
+                <p className="text-xs text-primary/40 font-medium text-center uppercase tracking-widest">Kessler respects your Git index.</p>
               </div>
             </div>
 
           </div>
         </motion.div>
+        
+        <div className="mt-12 text-center">
+           <p className="text-muted-foreground text-sm font-medium italic">
+             "Don't trust your source code to a blind script. Kessler respects your Git index."
+           </p>
+        </div>
       </div>
     </section>
   );

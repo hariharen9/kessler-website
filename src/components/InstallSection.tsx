@@ -15,8 +15,8 @@ const installMethods = [
     id: "npm",
     label: "NPM", 
     icon: Package,
-    command: "npm install -g kessler", 
-    alt: "npx kessler ~/Projects",
+    command: "npm install -g kessler-cli", 
+    alt: "npx kessler-cli ~/Projects",
     platform: "Node.js (Cross-platform)"
   },
   { 

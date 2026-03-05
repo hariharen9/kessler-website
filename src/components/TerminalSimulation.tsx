@@ -6,11 +6,13 @@ const TerminalSimulation = () => {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
   const [activeTab, setActiveTab] = useState(1); // 1: Projects, 2: Global, 3: History
+  const [mode, setMode] = useState<"safe" | "deep">("safe");
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key === "1") setActiveTab(1);
     if (event.key === "2") setActiveTab(2);
     if (event.key === "3") setActiveTab(3);
+    if (event.key === "m") setMode(prev => prev === "safe" ? "deep" : "safe");
   }, []);
 
   useEffect(() => {
@@ -21,7 +23,7 @@ const TerminalSimulation = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       setStep((s) => (s + 1) % 4);
-    }, 8000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -32,32 +34,39 @@ const TerminalSimulation = () => {
         setProgress((p) => {
           if (p >= 100) {
             clearInterval(interval);
+            // Auto-advance to results step once scan is finished
+            setTimeout(() => setStep(1), 100);
             return 100;
           }
-          return p + 2;
+          return p + 10;
         });
-      }, 30);
+      }, 20);
       return () => clearInterval(interval);
     }
   }, [step]);
 
   const projects = [
-    { name: "void-engine", size: "1.2 GB", type: "Rust", time: "2d", artifact: "target/" },
-    { name: "nebula-api", size: "842.1 MB", type: "Python", time: "1d", artifact: ".venv" },
-    { name: "event-horizon", size: "529.7 MB", type: "Node.js", time: "today", artifact: "node_modules" },
-    { name: "star-tracker", size: "357.8 MB", type: "C++", time: "5d", artifact: "build/" },
-    { name: "quant-core", size: "215.3 MB", type: "Go", time: "today", artifact: "dist/" },
+    { name: "npm-cache", size: "128.4 MB", type: "Global", artifact: "~/.npm", isDeep: false },
+    { name: "pip-cache", size: "342.1 MB", type: "Global", artifact: "~/.cache/pip", isDeep: false },
+    { name: "cargo-registry", size: "842.2 MB", type: "Global", artifact: "~/.cargo/registry", isDeep: false },
+    { name: "go-build-cache", size: "215.3 MB", type: "Global", artifact: "~/.cache/go-build", isDeep: false },
+    { name: "yarn-cache", size: "156.8 MB", type: "Global", artifact: "~/.yarn/berry/cache", isDeep: false },
+    { name: "void-engine", size: "1.2 GB", type: "Rust", artifact: "target/", isDeep: true },
+    { name: "nebula-api", size: "842.1 MB", type: "Python", artifact: ".venv", isDeep: true },
+    { name: "event-horizon", size: "529.7 MB", type: "Node.js", artifact: "node_modules", isDeep: true },
+    { name: "star-tracker", size: "357.8 MB", type: "C++", artifact: "build/", isDeep: true },
   ];
 
-  const globalCaches = [
-    { name: "npm cache", size: "4.2 GB", icon: "📦" },
-    { name: "cargo registry", size: "2.8 GB", icon: "🦀" },
-    { name: "pip wheels", size: "1.1 GB", icon: "🐍" },
-    { name: "homebrew bottle", size: "950 MB", icon: "🍺" },
-  ];
+  const filteredProjects = mode === "safe" ? projects.filter(p => !p.isDeep) : projects;
 
   return (
     <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-16 relative group px-2 sm:px-0">
+      <div className="absolute -bottom-10 left-0 right-0 text-center">
+        <p className="text-[10px] text-muted-foreground font-medium italic opacity-60">
+          "Customizable Aggression. Daily tidying with <span className="text-green-400">Safe Mode</span>, full system reset with <span className="text-primary">Deep Mode</span>."
+        </p>
+      </div>
+
       {/* Terminal Header */}
       <div className="bg-[#1a1b26] rounded-t-xl border-x border-t border-white/10 p-3 sm:p-4 flex items-center justify-between shadow-2xl transition-colors group-hover:border-primary/30">
         <div className="flex gap-1.5 sm:gap-2">
@@ -67,7 +76,7 @@ const TerminalSimulation = () => {
         </div>
         <div className="text-[9px] sm:text-[11px] text-muted-foreground uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center gap-2 sm:gap-3" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           <TerminalIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary/70" />
-          kessler — tui — 120x40
+          kessler — {mode.toUpperCase()} — {activeTab === 1 ? "projects" : activeTab === 2 ? "global" : "logs"}
         </div>
         <div className="w-10 sm:w-16" />
       </div>
@@ -75,25 +84,44 @@ const TerminalSimulation = () => {
       {/* Terminal Body */}
       <div className="bg-[#0b0d13] rounded-b-xl border border-white/10 p-4 sm:p-8 text-[10px] sm:text-sm shadow-2xl relative overflow-hidden min-h-[400px] sm:min-h-[500px] transition-colors group-hover:border-primary/20" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
         {/* TUI Header Tabs */}
-        <div className="flex gap-6 mb-8 border-b border-white/5 pb-3">
-          <button 
-            onClick={() => setActiveTab(1)}
-            className={`px-3 py-1 rounded text-xs transition-all border ${activeTab === 1 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
-          >
-            [ 1: Projects ]
-          </button>
-          <button 
-            onClick={() => setActiveTab(2)}
-            className={`px-3 py-1 rounded text-xs transition-all border ${activeTab === 2 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
-          >
-            2: Global
-          </button>
-          <button 
-            onClick={() => setActiveTab(3)}
-            className={`px-3 py-1 rounded text-xs transition-all border ${activeTab === 3 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
-          >
-            3: History
-          </button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 border-b border-white/5 pb-4">
+          <div className="flex gap-4 sm:gap-6">
+            <button 
+              onClick={() => setActiveTab(1)}
+              className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 1 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
+            >
+              [ 1: Projects ]
+            </button>
+            <button 
+              onClick={() => setActiveTab(2)}
+              className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 2 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
+            >
+              2: Global
+            </button>
+            <button 
+              onClick={() => setActiveTab(3)}
+              className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 3 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
+            >
+              3: History
+            </button>
+          </div>
+
+          {/* Mode Toggle Inside Terminal */}
+          <div className="flex items-center gap-2 bg-white/5 p-1 rounded-lg border border-white/10 self-start sm:self-auto">
+            <button 
+              onClick={() => setMode("safe")}
+              className={`px-3 py-1 rounded text-[9px] font-black uppercase tracking-widest transition-all ${mode === "safe" ? "bg-green-500/20 text-green-400" : "text-muted-foreground/40 hover:text-muted-foreground"}`}
+            >
+              Safe
+            </button>
+            <div className="w-px h-3 bg-white/10" />
+            <button 
+              onClick={() => setMode("deep")}
+              className={`px-3 py-1 rounded text-[9px] font-black uppercase tracking-widest transition-all ${mode === "deep" ? "bg-primary/20 text-primary" : "text-muted-foreground/40 hover:text-muted-foreground"}`}
+            >
+              Deep
+            </button>
+          </div>
         </div>
 
         <AnimatePresence mode="wait">
@@ -107,8 +135,13 @@ const TerminalSimulation = () => {
             >
               {/* Projects Main View */}
               <div className="col-span-12 lg:col-span-8">
-                <div className="flex items-center gap-3 mb-4 sm:mb-6">
-                  <span className="text-primary bg-primary/10 px-2 py-0.5 sm:px-3 sm:py-1 rounded text-[10px] sm:text-xs font-bold border border-primary/20 tracking-wider">🚀 KESSLER ENGINE</span>
+                <div className="flex items-center justify-between mb-4 sm:mb-6">
+                  <span className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded text-[10px] sm:text-xs font-bold border transition-colors tracking-wider ${mode === "safe" ? "text-green-400 bg-green-400/10 border-green-500/20" : "text-primary bg-primary/10 border-primary/20"}`}>
+                    🚀 KESSLER {mode.toUpperCase()} SCAN
+                  </span>
+                  <span className="text-[9px] text-muted-foreground/40 font-mono italic">
+                    {mode === "safe" ? "Targeting 100% regeneratable caches" : "Targeting all build artifacts & binaries"}
+                  </span>
                 </div>
 
                 <div className="text-muted-foreground mb-6 sm:mb-8 flex items-center gap-2 sm:gap-3 bg-white/5 p-2 sm:p-3 rounded-lg border border-white/5">
@@ -119,29 +152,29 @@ const TerminalSimulation = () => {
                     </span>
                   ) : (
                     <span className="flex items-center gap-2 text-[10px] sm:text-xs truncate">
-                      <Shield className="w-3 h-3 sm:w-4 sm:h-4 text-green-400" /> Found 12 targets | <span className="text-accent font-bold">4.2 GB</span>
+                      <Shield className={`w-3 h-3 sm:w-4 sm:h-4 ${mode === "safe" ? "text-green-400" : "text-primary"}`} /> Found {filteredProjects.length} targets | <span className={`${mode === "safe" ? "text-green-400" : "text-accent"} font-bold`}>{mode === "safe" ? "1.6 GB" : "4.2 GB"}</span>
                     </span>
                   )}
                 </div>
 
                 <div className="space-y-2 sm:space-y-3">
-                  {projects.map((p, i) => (
+                  {filteredProjects.map((p, i) => (
                     <motion.div
                       key={p.name}
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: step >= 1 ? 1 : 0, x: step >= 1 ? 0 : -10 }}
                       transition={{ delay: i * 0.1 }}
-                      className={`flex items-center gap-2 sm:gap-4 p-2 sm:p-2.5 rounded-md transition-all ${i === 0 && step >= 1 ? "bg-primary/10 border border-primary/20" : "border border-transparent"}`}
+                      className={`flex items-center gap-2 sm:gap-4 p-2 sm:p-2.5 rounded-md transition-all ${i === 0 && step >= 1 ? (mode === "safe" ? "bg-green-500/10 border-green-500/20" : "bg-primary/10 border-primary/20") : "border border-transparent"}`}
                     >
-                      <span className="text-primary/60 text-[10px] w-3">{i === 0 ? "→" : " "}</span>
+                      <span className={`${mode === "safe" ? "text-green-500/60" : "text-primary/60"} text-[10px] w-3`}>{i === 0 ? "→" : " "}</span>
                       <span className="text-primary/40 hidden sm:inline">[ ]</span>
-                      <span className="text-green-400/80">
+                      <span className={mode === "safe" ? "text-green-400/80" : "text-primary/80"}>
                         <Box className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                       </span>
                       <span className="flex-1 text-foreground/90 font-medium truncate text-[11px] sm:text-sm">
                         {p.name} <span className="text-[9px] text-primary/40 font-mono ml-1 hidden sm:inline">{p.artifact}</span>
                       </span>
-                      <span className="text-muted-foreground/80 font-bold text-[10px] sm:text-xs">{p.size}</span>
+                      <span className={`font-bold text-[10px] sm:text-xs ${p.isDeep ? "text-accent" : "text-green-400"}`}>{p.size}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -150,6 +183,7 @@ const TerminalSimulation = () => {
                   <span className="text-primary/60">↑/↓: Nav</span>
                   <span className="text-primary/60 hidden sm:inline">Space: Select</span>
                   <span className="text-accent/60">Enter: Cleanup</span>
+                  <span className="text-green-400/60">M: Toggle Mode</span>
                 </div>
               </div>
 

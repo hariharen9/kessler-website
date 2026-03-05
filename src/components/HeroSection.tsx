@@ -29,7 +29,7 @@ const HeroSection = () => {
   }, [mouseX, mouseY]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("npm install -g kessler");
+    navigator.clipboard.writeText("npm install -g kessler-cli");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -105,7 +105,7 @@ const HeroSection = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12 px-4"
+          className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6 px-4"
         >
           <Button variant="hero" size="xl" className="h-14 sm:h-16 px-8 sm:px-10 text-base sm:text-lg group w-full sm:w-auto rounded-full" asChild>
             <a href="#install">
@@ -119,6 +119,25 @@ const HeroSection = () => {
               View on GitHub
             </a>
           </Button>
+        </motion.div>
+
+        {/* Mini Snippet for Power Users */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.8 }}
+          className="flex items-center justify-center gap-3 mb-12"
+        >
+          <div className="glass px-4 py-2 rounded-xl border border-white/5 flex items-center gap-3 group cursor-pointer hover:border-primary/30 transition-all" onClick={handleCopy}>
+            <code className="text-[10px] sm:text-xs font-mono text-muted-foreground group-hover:text-primary transition-colors">
+              <span className="text-primary/50 mr-2">$</span>
+              npm install -g kessler-cli
+            </code>
+            <div className="w-px h-3 bg-white/10" />
+            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 group-hover:text-primary/60 transition-colors">
+              {copied ? "Copied!" : "Copy"}
+            </span>
+          </div>
         </motion.div>
 
         {/* Terminal Simulation */}

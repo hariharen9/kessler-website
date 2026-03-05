@@ -7,66 +7,57 @@ const tools = [
     name: "Kessler",
     isKessler: true,
     features: {
-      multiEcosystem: true,
-      gitAware: true,
-      interactive: true,
-      safeDelete: true,
-      gitignoreIntelligence: true,
+      gitAware: "✅ (git ls-files)",
+      globalCaches: "✅ (Docker, npm, Brew)",
+      modeTiers: "✅ (Safe vs Deep)",
+      gitignoreIntelligence: "✅ (Deep Scan)",
+      osTrash: "✅ (+ Windows)",
       speed: "Concurrent",
-      crossPlatform: true,
-      singleCommand: true,
+    }
+  },
+  {
+    name: "Kondo",
+    isKondo: true,
+    features: {
+      gitAware: "❌",
+      globalCaches: "❌",
+      modeTiers: "❌",
+      gitignoreIntelligence: "❌",
+      osTrash: "✅",
+      speed: "Fast",
     }
   },
   {
     name: "npkill",
     features: {
-      multiEcosystem: false,
-      gitAware: false,
-      interactive: true,
-      safeDelete: false,
-      gitignoreIntelligence: false,
+      gitAware: "❌",
+      globalCaches: "❌",
+      modeTiers: "❌",
+      gitignoreIntelligence: "❌",
+      osTrash: "❌",
       speed: "Slow",
-      crossPlatform: true,
-      singleCommand: false,
     }
   },
   {
     name: "cargo clean",
     features: {
-      multiEcosystem: false,
-      gitAware: false,
-      interactive: false,
-      safeDelete: false,
-      gitignoreIntelligence: false,
+      gitAware: "❌",
+      globalCaches: "❌",
+      modeTiers: "❌",
+      gitignoreIntelligence: "❌",
+      osTrash: "❌",
       speed: "Fast",
-      crossPlatform: true,
-      singleCommand: false,
-    }
-  },
-  {
-    name: "Manual Scripts",
-    features: {
-      multiEcosystem: false,
-      gitAware: false,
-      interactive: false,
-      safeDelete: false,
-      gitignoreIntelligence: false,
-      speed: "Varies",
-      crossPlatform: false,
-      singleCommand: false,
     }
   },
 ];
 
 const featureLabels = {
-  multiEcosystem: "Multi-Ecosystem (10+)",
   gitAware: "Git Safety Net",
-  interactive: "Interactive TUI",
-  safeDelete: "OS Trash Integration",
-  gitignoreIntelligence: ".gitignore Intelligence",
+  globalCaches: "Global Caches",
+  modeTiers: "Mode Tiers",
+  gitignoreIntelligence: ".gitignore Scan",
+  osTrash: "OS Trash Integration",
   speed: "Scan Performance",
-  crossPlatform: "Cross-Platform",
-  singleCommand: "Single Command Cleanup",
 };
 
 const ComparisonChart = () => {
@@ -86,13 +77,13 @@ const ComparisonChart = () => {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-accent/20 bg-accent/5 text-accent text-[10px] font-black uppercase tracking-widest mb-6">
-            <Zap className="w-3 h-3" /> The Clear Winner
+            <Zap className="w-3 h-3" /> The Enterprise Choice
           </div>
           <h2 className="text-4xl sm:text-6xl font-black uppercase tracking-tighter leading-[0.9] mb-6 font-display">
-            How Kessler <span className="text-gradient-accent">Stacks Up</span>
+            The <span className="text-gradient-accent">Kondo Killer</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Kessler vs. ecosystem-specific tools: built for modern polyglot development.
+            Kessler vs. the competition: why the world's best engineering teams choose Kessler.
           </p>
         </motion.div>
 
@@ -102,27 +93,29 @@ const ComparisonChart = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="overflow-x-auto"
         >
-          <div className="min-w-[800px]">
+          <div className="min-w-[900px]">
             {/* Header */}
             <div className="grid grid-cols-5 gap-4 mb-4">
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider self-end pb-4">
                 Feature
               </div>
               {tools.map((tool) => (
                 <div
                   key={tool.name}
-                  className={`text-center p-4 rounded-t-xl ${
+                  className={`text-center p-6 rounded-t-2xl transition-all ${
                     tool.isKessler
-                      ? "bg-primary/10 border-2 border-primary/30"
-                      : "glass border border-white/10"
+                      ? "bg-primary/10 border-x-2 border-t-2 border-primary/40 shadow-[0_-10px_30px_-10px_rgba(125,86,244,0.2)]"
+                      : tool.isKondo
+                      ? "bg-white/5 border-x border-t border-white/20"
+                      : "bg-white/5 border-x border-t border-white/10 opacity-60"
                   }`}
                 >
-                  <div className={`font-bold text-lg ${tool.isKessler ? "text-primary" : "text-foreground"}`}>
+                  <div className={`font-black text-xl uppercase tracking-tighter ${tool.isKessler ? "text-primary" : "text-foreground"}`}>
                     {tool.name}
                   </div>
                   {tool.isKessler && (
-                    <div className="text-[10px] text-primary/70 uppercase tracking-widest mt-1">
-                      Recommended
+                    <div className="text-[10px] text-primary/70 font-black uppercase tracking-widest mt-1">
+                      The Standard
                     </div>
                   )}
                 </div>
@@ -139,41 +132,37 @@ const ComparisonChart = () => {
                   transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
                   className="grid grid-cols-5 gap-4 items-center"
                 >
-                  <div className="text-sm font-medium text-foreground/90 py-4">
+                  <div className="text-sm font-bold text-foreground/80 py-4 uppercase tracking-tight">
                     {label}
                   </div>
                   {tools.map((tool) => {
                     const value = tool.features[key as keyof typeof tool.features];
                     const isKessler = tool.isKessler;
+                    const isKondo = tool.isKondo;
                     
+                    const isSuccess = typeof value === 'string' && value.includes('✅');
+                    const isFailure = typeof value === 'string' && value.includes('❌');
+
                     return (
                       <div
                         key={tool.name}
-                        className={`text-center p-4 rounded-lg ${
+                        className={`text-center p-5 rounded-xl transition-all ${
                           isKessler
-                            ? "bg-primary/5 border border-primary/20"
-                            : "glass border border-white/5"
+                            ? "bg-primary/5 border-x-2 border-primary/20"
+                            : isKondo
+                            ? "bg-white/5 border-x border-white/10"
+                            : "bg-white/5 border-x border-white/5 opacity-60"
                         }`}
                       >
-                        {typeof value === "boolean" ? (
-                          value ? (
-                            <Check className={`w-5 h-5 mx-auto ${isKessler ? "text-primary" : "text-green-400"}`} />
-                          ) : (
-                            <X className="w-5 h-5 mx-auto text-muted-foreground/40" />
-                          )
-                        ) : (
-                          <span
-                            className={`text-sm font-bold ${
-                              isKessler
-                                ? "text-primary"
-                                : value === "Blazing" || value === "Medium"
-                                ? "text-foreground/70"
-                                : "text-muted-foreground/60"
-                            }`}
-                          >
-                            {value}
-                          </span>
-                        )}
+                        <span
+                          className={`text-[13px] font-black uppercase tracking-tight ${
+                            isSuccess ? "text-green-400" : 
+                            isFailure ? "text-red-400/50" :
+                            isKessler ? "text-primary" : "text-muted-foreground"
+                          }`}
+                        >
+                          {value}
+                        </span>
                       </div>
                     );
                   })}
