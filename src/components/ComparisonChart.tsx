@@ -65,7 +65,7 @@ const ComparisonChart = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative z-10 py-32 px-4 overflow-hidden">
+    <section className="relative z-10 py-32 px-4 overflow-x-clip">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-accent/5 rounded-full blur-[150px] pointer-events-none" />
       
       <div className="max-w-6xl mx-auto">
@@ -91,30 +91,30 @@ const ComparisonChart = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="overflow-x-auto"
+          className="overflow-x-auto pb-8 -mx-4 px-4 sm:mx-0 sm:px-0 snap-x snap-mandatory hide-scrollbar"
         >
-          <div className="min-w-[900px]">
+          <div className="min-w-[800px] lg:min-w-full">
             {/* Header */}
-            <div className="grid grid-cols-5 gap-4 mb-4">
-              <div className="text-sm font-bold text-muted-foreground uppercase tracking-wider self-end pb-4">
+            <div className="grid grid-cols-5 gap-2 sm:gap-4 mb-4">
+              <div className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-wider self-end pb-4 pl-2">
                 Feature
               </div>
               {tools.map((tool) => (
                 <div
                   key={tool.name}
-                  className={`text-center p-6 rounded-t-2xl transition-all ${
+                  className={`text-center p-4 sm:p-6 rounded-t-2xl transition-all snap-center ${
                     tool.isKessler
-                      ? "bg-primary/10 border-x-2 border-t-2 border-primary/40 shadow-[0_-10px_30px_-10px_rgba(125,86,244,0.2)]"
+                      ? "bg-primary/10 border-x-2 border-t-2 border-primary/40 shadow-[0_-10px_30px_-10px_rgba(125,86,244,0.2)] relative"
                       : tool.isKondo
                       ? "bg-white/5 border-x border-t border-white/20"
                       : "bg-white/5 border-x border-t border-white/10 opacity-60"
                   }`}
                 >
-                  <div className={`font-black text-xl uppercase tracking-tighter ${tool.isKessler ? "text-primary" : "text-foreground"}`}>
+                  <div className={`font-black text-sm sm:text-xl uppercase tracking-tighter ${tool.isKessler ? "text-primary" : "text-foreground"}`}>
                     {tool.name}
                   </div>
                   {tool.isKessler && (
-                    <div className="text-[10px] text-primary/70 font-black uppercase tracking-widest mt-1">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-[8px] sm:text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full whitespace-nowrap">
                       The Standard
                     </div>
                   )}
@@ -130,9 +130,9 @@ const ComparisonChart = () => {
                   initial={{ opacity: 0, x: -20 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.4, delay: 0.3 + index * 0.05 }}
-                  className="grid grid-cols-5 gap-4 items-center"
+                  className="grid grid-cols-5 gap-2 sm:gap-4 items-center group"
                 >
-                  <div className="text-sm font-bold text-foreground/80 py-4 uppercase tracking-tight">
+                  <div className="text-[10px] sm:text-sm font-bold text-foreground/80 py-3 sm:py-4 uppercase tracking-tight pl-2">
                     {label}
                   </div>
                   {tools.map((tool) => {
@@ -146,16 +146,16 @@ const ComparisonChart = () => {
                     return (
                       <div
                         key={tool.name}
-                        className={`text-center p-5 rounded-xl transition-all ${
+                        className={`text-center p-3 sm:p-5 rounded-xl transition-all h-full flex items-center justify-center ${
                           isKessler
-                            ? "bg-primary/5 border-x-2 border-primary/20"
+                            ? "bg-primary/5 border-x-2 border-primary/20 group-hover:bg-primary/10"
                             : isKondo
-                            ? "bg-white/5 border-x border-white/10"
-                            : "bg-white/5 border-x border-white/5 opacity-60"
+                            ? "bg-white/5 border-x border-white/10 group-hover:bg-white/10"
+                            : "bg-white/5 border-x border-white/5 opacity-60 group-hover:opacity-80"
                         }`}
                       >
                         <span
-                          className={`text-[13px] font-black uppercase tracking-tight ${
+                          className={`text-[10px] sm:text-[13px] font-black uppercase tracking-tight ${
                             isSuccess ? "text-green-400" : 
                             isFailure ? "text-red-400/50" :
                             isKessler ? "text-primary" : "text-muted-foreground"

@@ -41,13 +41,6 @@ const installMethods = [
     note: "Download .deb from releases",
     platform: "Ubuntu / Debian"
   },
-  { 
-    id: "aur",
-    label: "AUR", 
-    icon: Terminal,
-    command: "yay -S kessler-bin",
-    platform: "Arch Linux"
-  },
 ];
 
 const CopyButton = ({ text }: { text: string }) => {
@@ -75,7 +68,7 @@ const InstallSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="install" className="relative z-10 py-32 px-4 overflow-hidden">
+    <section id="install" className="relative z-10 py-32 px-4 overflow-x-clip">
       {/* Decorative background circle */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-[600px] h-[600px] bg-accent/5 rounded-full blur-[120px] pointer-events-none" />
       

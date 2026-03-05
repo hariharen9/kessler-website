@@ -1,90 +1,27 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { FaNodeJs, FaPython, FaRust, FaPhp, FaGem, FaJava, FaDocker } from "react-icons/fa";
-import { SiGo, SiDotnet, SiElixir, SiTerraform, SiHomebrew, SiNixos, SiVagrant } from "react-icons/si";
+import { FaNodeJs, FaPython, FaRust, FaPhp, FaGem, FaJava, FaDocker, FaNpm } from "react-icons/fa";
+import { 
+  SiGo, SiDotnet, SiElixir, SiTerraform, SiHomebrew, SiNixos, SiVagrant,
+  SiCplusplus, SiSwift, SiFlutter, SiAndroid, SiScala, SiHaskell, 
+  SiZig, SiR, SiLatex, SiUnrealengine, SiGodotengine, SiAstro, SiNx,
+  SiYarn, SiPnpm, SiBun, SiDeno, SiComposer
+} from "react-icons/si";
+import { TbBrandCSharp } from "react-icons/tb";
 import { FileCode, FolderSearch, ArrowRight, Cog, Zap, Globe, HardDrive } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const ecosystems = [
-  { 
-    name: "Node.js", 
-    triggers: ["package.json"],
-    targets: ["node_modules", "dist", "build", ".next", ".nuxt", "coverage"], 
-    icon: FaNodeJs, 
-    color: "text-green-400",
-    bg: "bg-green-400/10"
-  },
-  { 
-    name: "Python", 
-    triggers: ["requirements.txt", "pyproject.toml"],
-    targets: ["__pycache__", "venv", ".venv", ".pytest_cache", ".mypy_cache"], 
-    icon: FaPython, 
-    color: "text-blue-400",
-    bg: "bg-blue-400/10"
-  },
-  { 
-    name: "Rust", 
-    triggers: ["Cargo.toml"],
-    targets: ["target/"], 
-    icon: FaRust, 
-    color: "text-orange-500",
-    bg: "bg-orange-500/10"
-  },
-  { 
-    name: "Go", 
-    triggers: ["go.mod"],
-    targets: ["vendor/"], 
-    icon: SiGo, 
-    color: "text-cyan-400",
-    bg: "bg-cyan-400/10"
-  },
-  { 
-    name: "Java / JVM", 
-    triggers: ["pom.xml", "build.gradle"],
-    targets: ["target/", "build/", ".gradle/"], 
-    icon: FaJava, 
-    color: "text-red-400",
-    bg: "bg-red-400/10"
-  },
-  { 
-    name: "Elixir", 
-    triggers: ["mix.exs"],
-    targets: ["deps/", "_build/"], 
-    icon: SiElixir, 
-    color: "text-violet-400",
-    bg: "bg-violet-400/10"
-  },
-  { 
-    name: "PHP", 
-    triggers: ["composer.json"],
-    targets: ["vendor/"], 
-    icon: FaPhp, 
-    color: "text-indigo-400",
-    bg: "bg-indigo-400/10"
-  },
-  { 
-    name: ".NET", 
-    triggers: ["*.csproj", "*.sln"],
-    targets: ["bin/", "obj/", "packages/"], 
-    icon: SiDotnet, 
-    color: "text-purple-400",
-    bg: "bg-purple-400/10"
-  },
-  { 
-    name: "Terraform", 
-    triggers: [".terraform.lock.hcl"],
-    targets: [".terraform/", "cdk.out/"], 
-    icon: SiTerraform, 
-    color: "text-sky-500",
-    bg: "bg-sky-500/10"
-  },
-  { 
-    name: "Ruby", 
-    triggers: ["Gemfile"],
-    targets: ["vendor/bundle", ".bundle"], 
-    icon: FaGem, 
-    color: "text-rose-400",
-    bg: "bg-rose-400/10"
-  },
+  { name: "Node.js", triggers: ["package.json"], targets: ["node_modules", "dist", ".next"], icon: FaNodeJs, color: "text-green-400", bg: "bg-green-400/10" },
+  { name: "Python", triggers: ["requirements.txt"], targets: ["__pycache__", "venv"], icon: FaPython, color: "text-blue-400", bg: "bg-blue-400/10" },
+  { name: "Rust", triggers: ["Cargo.toml"], targets: ["target/"], icon: FaRust, color: "text-orange-500", bg: "bg-orange-500/10" },
+  { name: "Go", triggers: ["go.mod"], targets: ["vendor/"], icon: SiGo, color: "text-cyan-400", bg: "bg-cyan-400/10" },
+  { name: "Java", triggers: ["pom.xml"], targets: ["target/"], icon: FaJava, color: "text-red-400", bg: "bg-red-400/10" },
+  { name: "Elixir", triggers: ["mix.exs"], targets: ["deps/", "_build/"], icon: SiElixir, color: "text-violet-400", bg: "bg-violet-400/10" },
+  { name: "PHP", triggers: ["composer.json"], targets: ["vendor/"], icon: FaPhp, color: "text-indigo-400", bg: "bg-indigo-400/10" },
+  { name: ".NET", triggers: ["*.csproj"], targets: ["bin/", "obj/"], icon: SiDotnet, color: "text-purple-400", bg: "bg-purple-400/10" },
+  { name: "Terraform", triggers: [".terraform.lock.hcl"], targets: [".terraform/"], icon: SiTerraform, color: "text-sky-500", bg: "bg-sky-500/10" },
+  { name: "Ruby", triggers: ["Gemfile"], targets: ["vendor/bundle"], icon: FaGem, color: "text-rose-400", bg: "bg-rose-400/10" },
 ];
 
 const EcosystemSection = () => {
@@ -92,24 +29,54 @@ const EcosystemSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
 
-  const localRing = [
-    { icon: FaNodeJs, color: "text-green-400", label: "Node.js" },
-    { icon: FaRust, color: "text-orange-500", label: "Rust" },
-    { icon: SiGo, color: "text-cyan-400", label: "Go" },
-    { icon: FaPython, color: "text-blue-400", label: "Python" },
-    { icon: FaJava, color: "text-red-400", label: "Java" },
+  const ring1 = [
+    { icon: FaNodeJs, color: "text-green-400", label: "Node.js", tooltip: "Cleans node_modules, dist, .next, .nuxt" },
+    { icon: FaRust, color: "text-orange-500", label: "Rust", tooltip: "Cleans target/ and unneeded locks" },
+    { icon: SiGo, color: "text-cyan-400", label: "Go", tooltip: "Cleans vendor/ and module caches" },
+    { icon: FaPython, color: "text-blue-400", label: "Python", tooltip: "Cleans __pycache__, venv, .pytest_cache" },
+    { icon: FaJava, color: "text-red-400", label: "Java", tooltip: "Cleans target/, build/, .gradle/" },
+    { icon: FaPhp, color: "text-indigo-400", label: "PHP", tooltip: "Cleans vendor/ and composer caches" },
+  ];
+
+  const ring2 = [
+    { icon: TbBrandCSharp, color: "text-purple-500", label: "C# / .NET", tooltip: "Cleans bin/, obj/, packages/" },
+    { icon: SiElixir, color: "text-violet-400", label: "Elixir", tooltip: "Cleans deps/, _build/" },
+    { icon: SiCplusplus, color: "text-blue-600", label: "C/C++", tooltip: "Cleans build/, CMakeCache.txt, .o files" },
+    { icon: SiSwift, color: "text-orange-400", label: "Swift", tooltip: "Cleans .build/, DerivedData/" },
+    { icon: SiFlutter, color: "text-cyan-400", label: "Flutter", tooltip: "Cleans build/, .dart_tool/, pubspec.lock" },
+    { icon: SiAndroid, color: "text-green-500", label: "Android", tooltip: "Cleans build/, .gradle/" },
+    { icon: FaGem, color: "text-rose-500", label: "Ruby", tooltip: "Cleans vendor/bundle, .bundle" },
+  ];
+
+  const ring3 = [
+    { icon: SiScala, color: "text-red-500", label: "Scala", tooltip: "Cleans target/, project/target/" },
+    { icon: SiHaskell, color: "text-purple-400", label: "Haskell", tooltip: "Cleans dist-newstyle/" },
+    { icon: SiZig, color: "text-yellow-500", label: "Zig", tooltip: "Cleans zig-cache/, zig-out/" },
+    { icon: SiR, color: "text-blue-500", label: "R", tooltip: "Cleans .RData, .Rhistory" },
+    { icon: SiLatex, color: "text-teal-500", label: "LaTeX", tooltip: "Cleans .aux, .log, .pdf, .out" },
+    { icon: SiUnrealengine, color: "text-gray-300", label: "Unreal", tooltip: "Cleans Binaries/, DerivedDataCache/, Intermediate/, Saved/" },
+    { icon: SiGodotengine, color: "text-blue-400", label: "Godot", tooltip: "Cleans .godot/" },
+    { icon: SiTerraform, color: "text-purple-600", label: "Terraform", tooltip: "Cleans .terraform/, cdk.out/" },
+    { icon: SiAstro, color: "text-orange-500", label: "Astro", tooltip: "Cleans dist/, .astro/" },
+    { icon: SiNx, color: "text-blue-300", label: "Nx", tooltip: "Cleans dist/, node_modules/" },
   ];
 
   const globalRing = [
-    { icon: FaDocker, color: "text-blue-500", label: "Docker" },
-    { icon: SiHomebrew, color: "text-yellow-600", label: "Homebrew" },
-    { icon: SiNixos, color: "text-sky-400", label: "Nix" },
-    { icon: SiVagrant, color: "text-blue-300", label: "Vagrant" },
-    { icon: HardDrive, color: "text-purple-400", label: "System Caches" },
+    { icon: FaDocker, color: "text-blue-500", label: "Docker", tooltip: "Cleans dangling images, stopped containers, build caches" },
+    { icon: SiHomebrew, color: "text-yellow-600", label: "Homebrew", tooltip: "Cleans outdated kegs, caches, unneeded dependencies" },
+    { icon: FaNpm, color: "text-red-500", label: "npm", tooltip: "Cleans ~/.npm global cache" },
+    { icon: SiYarn, color: "text-blue-400", label: "Yarn", tooltip: "Cleans ~/.yarn/berry/cache global cache" },
+    { icon: SiPnpm, color: "text-yellow-500", label: "pnpm", tooltip: "Cleans ~/.local/share/pnpm global store" },
+    { icon: SiBun, color: "text-gray-200", label: "Bun", tooltip: "Cleans ~/.bun/install/cache" },
+    { icon: SiDeno, color: "text-white", label: "Deno", tooltip: "Cleans ~/.cache/deno" },
+    { icon: SiComposer, color: "text-amber-600", label: "Composer", tooltip: "Cleans ~/.composer/cache" },
+    { icon: SiNixos, color: "text-sky-400", label: "Nix", tooltip: "Collects garbage from Nix store paths" },
+    { icon: SiVagrant, color: "text-blue-300", label: "Vagrant", tooltip: "Cleans ~/.vagrant.d/boxes" },
+    { icon: HardDrive, color: "text-purple-400", label: "System", tooltip: "Clears general OS temporary directories" },
   ];
 
   return (
-    <section className="relative z-10 py-32 px-4 overflow-hidden">
+    <section className="relative z-10 py-32 px-4 overflow-x-clip">
       {/* Background HUD elements */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
       
@@ -260,72 +227,182 @@ const EcosystemSection = () => {
             </p>
           </div>
 
-          <div className="relative flex items-center justify-center min-h-[600px]">
-            {/* Orbital Rings */}
-            <div className="absolute w-[300px] h-[300px] border border-white/5 rounded-full" />
-            <div className="absolute w-[500px] h-[500px] border border-white/5 rounded-full" />
-            
-            {/* Centerpiece */}
-            <motion.div 
-              animate={{ scale: [1, 1.05, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="relative z-10 w-32 h-32 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center shadow-[0_0_50px_rgba(125,86,244,0.3)]"
-            >
-              <div className="text-center">
-                <Zap className="w-8 h-8 text-primary mx-auto mb-1" />
-                <span className="text-[10px] font-black uppercase tracking-tighter text-white">Kessler</span>
-              </div>
-            </motion.div>
+          <div className="relative flex items-center justify-center min-h-[900px] overflow-hidden sm:overflow-visible">
+            <TooltipProvider delayDuration={100}>
+              {/* Orbital Rings */}
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }} className="absolute w-[280px] h-[280px] border border-white/5 rounded-full" />
+              <motion.div animate={{ rotate: -360 }} transition={{ duration: 180, repeat: Infinity, ease: "linear" }} className="absolute w-[480px] h-[480px] border border-white/5 rounded-full" />
+              <motion.div animate={{ rotate: 360 }} transition={{ duration: 240, repeat: Infinity, ease: "linear" }} className="absolute w-[680px] h-[680px] border border-white/5 rounded-full" />
+              <motion.div animate={{ rotate: -360 }} transition={{ duration: 300, repeat: Infinity, ease: "linear" }} className="absolute w-[920px] h-[920px] border border-white/5 rounded-full" />
+              
+              {/* Centerpiece */}
+              <motion.div 
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 4, repeat: Infinity }}
+                className="relative z-10 w-24 h-24 rounded-full bg-primary/20 border-2 border-primary/50 flex items-center justify-center shadow-[0_0_50px_rgba(125,86,244,0.3)]"
+              >
+                <div className="text-center">
+                  <Zap className="w-6 h-6 text-primary mx-auto mb-1" />
+                  <span className="text-[9px] font-black uppercase tracking-tighter text-white">Kessler</span>
+                </div>
+              </motion.div>
 
-            {/* Local Ring Icons */}
-            {localRing.map((item, i) => {
-              const angle = (i / localRing.length) * (2 * Math.PI);
-              const x = Math.cos(angle) * 150;
-              const y = Math.sin(angle) * 150;
-              const Icon = item.icon;
+              {/* Ring 1 Icons */}
+              <motion.div className="absolute top-1/2 left-1/2 w-0 h-0 z-20 pointer-events-none" animate={{ rotate: 360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }}>
+                {ring1.map((item, i) => {
+                  const angle = (i / ring1.length) * (2 * Math.PI) - Math.PI / 2;
+                  const x = Math.cos(angle) * 140;
+                  const y = Math.sin(angle) * 140;
+                  const Icon = item.icon;
 
-              return (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  style={{ x, y }}
-                  className="absolute flex flex-col items-center"
-                >
-                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-xl backdrop-blur-sm">
-                    <Icon className={`w-6 h-6 ${item.color} group-hover:scale-110 transition-transform`} />
-                  </div>
-                  <span className="mt-2 text-[8px] font-black uppercase tracking-widest text-muted-foreground/60">{item.label}</span>
-                </motion.div>
-              );
-            })}
+                  return (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      style={{ 
+                        x: `calc(${x}px - 20px)`, 
+                        y: `calc(${y}px - 20px)` 
+                      }}
+                      className="absolute flex flex-col items-center pointer-events-auto"
+                    >
+                      <motion.div animate={{ rotate: -360 }} transition={{ duration: 120, repeat: Infinity, ease: "linear" }}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-xl backdrop-blur-sm relative hover:z-50">
+                              <Icon className={`w-5 h-5 ${item.color} group-hover:scale-110 transition-transform`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="bg-card/90 backdrop-blur-xl border-white/10 z-50 px-3 py-2 text-xs font-mono">
+                            <span className="font-bold text-foreground block mb-1">{item.label}</span>
+                            <span className="text-muted-foreground">{item.tooltip}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
 
-            {/* Global Ring Icons */}
-            {globalRing.map((item, i) => {
-              const angle = ((i + 0.5) / globalRing.length) * (2 * Math.PI);
-              const x = Math.cos(angle) * 250;
-              const y = Math.sin(angle) * 250;
-              const Icon = item.icon;
+              {/* Ring 2 Icons */}
+              <motion.div className="absolute top-1/2 left-1/2 w-0 h-0 z-20 pointer-events-none" animate={{ rotate: -360 }} transition={{ duration: 180, repeat: Infinity, ease: "linear" }}>
+                {ring2.map((item, i) => {
+                  const angle = ((i + 0.5) / ring2.length) * (2 * Math.PI) - Math.PI / 2;
+                  const x = Math.cos(angle) * 240;
+                  const y = Math.sin(angle) * 240;
+                  const Icon = item.icon;
 
-              return (
-                <motion.div
-                  key={item.label}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 + i * 0.1 }}
-                  style={{ x, y }}
-                  className="absolute flex flex-col items-center"
-                >
-                  <div className="w-14 h-14 rounded-2xl bg-primary/5 border-2 border-primary/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-2xl backdrop-blur-md">
-                    <Icon className={`w-7 h-7 ${item.color} group-hover:scale-110 transition-transform`} />
-                  </div>
-                  <span className="mt-2 text-[9px] font-black uppercase tracking-widest text-primary/40">{item.label}</span>
-                </motion.div>
-              );
-            })}
+                  return (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 + i * 0.1 }}
+                      style={{ 
+                        x: `calc(${x}px - 20px)`, 
+                        y: `calc(${y}px - 20px)` 
+                      }}
+                      className="absolute flex flex-col items-center pointer-events-auto"
+                    >
+                      <motion.div animate={{ rotate: 360 }} transition={{ duration: 180, repeat: Infinity, ease: "linear" }}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-xl backdrop-blur-sm relative hover:z-50">
+                              <Icon className={`w-5 h-5 ${item.color} group-hover:scale-110 transition-transform`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="bg-card/90 backdrop-blur-xl border-white/10 z-50 px-3 py-2 text-xs font-mono">
+                            <span className="font-bold text-foreground block mb-1">{item.label}</span>
+                            <span className="text-muted-foreground">{item.tooltip}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+
+              {/* Ring 3 Icons */}
+              <motion.div className="absolute top-1/2 left-1/2 w-0 h-0 z-20 pointer-events-none" animate={{ rotate: 360 }} transition={{ duration: 240, repeat: Infinity, ease: "linear" }}>
+                {ring3.map((item, i) => {
+                  const angle = (i / ring3.length) * (2 * Math.PI) - Math.PI / 2;
+                  const x = Math.cos(angle) * 340;
+                  const y = Math.sin(angle) * 340;
+                  const Icon = item.icon;
+
+                  return (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.4 + i * 0.1 }}
+                      style={{ 
+                        x: `calc(${x}px - 20px)`, 
+                        y: `calc(${y}px - 20px)` 
+                      }}
+                      className="absolute flex flex-col items-center pointer-events-auto"
+                    >
+                      <motion.div animate={{ rotate: -360 }} transition={{ duration: 240, repeat: Infinity, ease: "linear" }}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-xl backdrop-blur-sm relative hover:z-50">
+                              <Icon className={`w-5 h-5 ${item.color} group-hover:scale-110 transition-transform`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="bg-card/90 backdrop-blur-xl border-white/10 z-50 px-3 py-2 text-xs font-mono">
+                            <span className="font-bold text-foreground block mb-1">{item.label}</span>
+                            <span className="text-muted-foreground">{item.tooltip}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+
+              {/* Global Ring Icons */}
+              <motion.div className="absolute top-1/2 left-1/2 w-0 h-0 z-20 pointer-events-none hidden sm:block" animate={{ rotate: -360 }} transition={{ duration: 300, repeat: Infinity, ease: "linear" }}>
+                {globalRing.map((item, i) => {
+                  const angle = ((i + 0.5) / globalRing.length) * (2 * Math.PI) - Math.PI / 2;
+                  const x = Math.cos(angle) * 460;
+                  const y = Math.sin(angle) * 460;
+                  const Icon = item.icon;
+
+                  return (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.6 + i * 0.1 }}
+                      style={{ 
+                        x: `calc(${x}px - 24px)`, 
+                        y: `calc(${y}px - 24px)` 
+                      }}
+                      className="absolute flex flex-col items-center pointer-events-auto"
+                    >
+                      <motion.div animate={{ rotate: 360 }} transition={{ duration: 300, repeat: Infinity, ease: "linear" }}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="w-12 h-12 rounded-2xl bg-primary/5 border-2 border-primary/10 flex items-center justify-center group hover:border-primary/50 transition-all cursor-default shadow-2xl backdrop-blur-md relative hover:z-50">
+                              <Icon className={`w-6 h-6 ${item.color} group-hover:scale-110 transition-transform`} />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent side="top" className="bg-card/90 backdrop-blur-xl border-white/10 z-50 px-3 py-2 text-xs font-mono">
+                            <span className="font-bold text-foreground block mb-1">{item.label}</span>
+                            <span className="text-muted-foreground">{item.tooltip}</span>
+                          </TooltipContent>
+                        </Tooltip>
+                      </motion.div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </TooltipProvider>
 
             {/* Connecting Lines (CSS only for simplicity) */}
             <div className="absolute inset-0 pointer-events-none opacity-20">
@@ -337,10 +414,10 @@ const EcosystemSection = () => {
             <div className="glass p-8 rounded-[2rem] border-white/5">
               <h4 className="text-xl font-black uppercase tracking-tight text-foreground mb-4 flex items-center gap-3">
                 <span className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">01</span>
-                The Local Ring
+                The Local Rings
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Standard cleanup for Node, Rust, Go, and Python. Kessler intelligently finds <code className="text-primary font-mono text-xs">node_modules</code>, <code className="text-primary font-mono text-xs">target/</code>, and <code className="text-primary font-mono text-xs">__pycache__</code> across your entire drive.
+                Standard cleanup for 30+ ecosystems including Node, Rust, Go, Python, C++, and Flutter. Kessler intelligently finds <code className="text-primary font-mono text-xs">node_modules</code>, <code className="text-primary font-mono text-xs">target/</code>, and <code className="text-primary font-mono text-xs">__pycache__</code> across your entire drive.
               </p>
             </div>
             <div className="glass p-8 rounded-[2rem] border-white/5 shadow-[0_0_50px_rgba(125,86,244,0.05)]">
@@ -349,7 +426,7 @@ const EcosystemSection = () => {
                 The Global Ring
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                The differentiator. Kessler reaches into Docker images, Homebrew bottles, Nix store paths, and Vagrant boxes. It’s the only tool that manages the "Invisible Junk" of modern devops.
+                The differentiator. Kessler reaches into Docker images, Homebrew bottles, Nix store paths, Vagrant boxes, and global package caches. It’s the only tool that manages the "Invisible Junk" of modern devops.
               </p>
             </div>
           </div>

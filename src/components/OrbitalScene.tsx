@@ -61,11 +61,8 @@ const OrbitalScene = () => {
   const debrisLayer3 = useMemo(() => createDebrisLayer(15, 500), []);
 
   return (
-    <div ref={containerRef} className="h-[300vh] relative z-10">
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        
-        {/* Top Fade for Seamless Transition */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-transparent h-96 pointer-events-none z-20" />
+    <div ref={containerRef} className="h-[300vh] relative z-10 mt-32 sm:mt-48">
+      <div className="sticky top-0 h-screen flex items-center justify-center overflow-x-clip">
         
         {/* Background Haze */}
         <div className="absolute inset-0 bg-radial-at-t from-primary/10 via-transparent to-transparent opacity-30" />

@@ -97,7 +97,7 @@ const FooterSection = () => {
               <span className="font-bold text-lg text-foreground font-display">Kessler</span>
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              An intelligent CLI that clears build artifacts and runtime caches — safely, fast, and across 10+ ecosystems.
+              An intelligent CLI that clears build artifacts and runtime caches — safely, fast, and across 30+ ecosystems.
             </p>
           </div>
 

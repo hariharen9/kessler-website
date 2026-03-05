@@ -87,7 +87,7 @@ const HeroSection = () => {
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Blazingly Fast</span>
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-accent/30 bg-accent/10 text-accent text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Git-Aware</span>
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Zero Risk</span>
-            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">10+ Ecosystems</span>
+            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">30+ Ecosystems</span>
           </div>
         </motion.div>
 
@@ -175,7 +175,7 @@ const HeroSection = () => {
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-2 text-foreground font-bold text-xl">
               <Cpu className="w-5 h-5" />
-              <span>10+</span>
+              <span>30+</span>
             </div>
             <span className="text-muted-foreground text-xs uppercase tracking-widest">Ecosystems</span>
           </div>

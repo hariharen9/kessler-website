@@ -1,17 +1,25 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
-import { HardDrive, Search, Shield, Zap, Box, Terminal as TerminalIcon, History, Globe, AlertTriangle } from "lucide-react";
+import { HardDrive, Search, Shield, Zap, Box, Terminal as TerminalIcon, History, Globe, AlertTriangle, Rocket } from "lucide-react";
+
+const globalCaches = [
+  { name: "npm-cache", icon: "📦", size: "1.2 GB" },
+  { name: "pip-cache", icon: "🐍", size: "840 MB" },
+  { name: "cargo-registry", icon: "🦀", size: "3.4 GB" },
+  { name: "go-build", icon: "🐹", size: "1.8 GB" },
+];
 
 const TerminalSimulation = () => {
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
-  const [activeTab, setActiveTab] = useState(1); // 1: Projects, 2: Global, 3: History
+  const [activeTab, setActiveTab] = useState(1); // 1: Projects, 2: Global, 3: History, 4: Launchpad
   const [mode, setMode] = useState<"safe" | "deep">("safe");
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     if (event.key === "1") setActiveTab(1);
     if (event.key === "2") setActiveTab(2);
     if (event.key === "3") setActiveTab(3);
+    if (event.key === "4") setActiveTab(4);
     if (event.key === "m") setMode(prev => prev === "safe" ? "deep" : "safe");
   }, []);
 
@@ -76,7 +84,7 @@ const TerminalSimulation = () => {
         </div>
         <div className="text-[9px] sm:text-[11px] text-muted-foreground uppercase tracking-[0.1em] sm:tracking-[0.2em] flex items-center gap-2 sm:gap-3" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
           <TerminalIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary/70" />
-          kessler — {mode.toUpperCase()} — {activeTab === 1 ? "projects" : activeTab === 2 ? "global" : "logs"}
+          kessler — {mode.toUpperCase()} — {activeTab === 1 ? "projects" : activeTab === 2 ? "global" : activeTab === 3 ? "logs" : "launchpad"}
         </div>
         <div className="w-10 sm:w-16" />
       </div>
@@ -90,19 +98,25 @@ const TerminalSimulation = () => {
               onClick={() => setActiveTab(1)}
               className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 1 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
             >
-              [ 1: Projects ]
+              {activeTab === 1 ? "[ 1: Projects ]" : "1: Projects"}
             </button>
             <button 
               onClick={() => setActiveTab(2)}
               className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 2 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
             >
-              2: Global
+              {activeTab === 2 ? "[ 2: Global ]" : "2: Global"}
             </button>
             <button 
               onClick={() => setActiveTab(3)}
               className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 3 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
             >
-              3: History
+              {activeTab === 3 ? "[ 3: History ]" : "3: History"}
+            </button>
+            <button 
+              onClick={() => setActiveTab(4)}
+              className={`px-3 py-1 rounded text-[10px] sm:text-xs transition-all border ${activeTab === 4 ? "bg-primary/20 text-primary border-primary/40" : "text-muted-foreground/40 border-transparent hover:text-muted-foreground"}`}
+            >
+              {activeTab === 4 ? "[ 4: Launchpad ]" : "4: Launchpad"}
             </button>
           </div>
 
@@ -182,8 +196,10 @@ const TerminalSimulation = () => {
                 <div className="mt-8 sm:mt-12 pt-4 sm:pt-6 border-t border-white/5 text-[9px] sm:text-[11px] text-muted-foreground/50 flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 uppercase tracking-widest font-bold">
                   <span className="text-primary/60">↑/↓: Nav</span>
                   <span className="text-primary/60 hidden sm:inline">Space: Select</span>
-                  <span className="text-accent/60">Enter: Cleanup</span>
+                  <span className="text-accent/60">E: Ecosystem</span>
+                  <span className="text-accent/60 hidden sm:inline">S: Stale</span>
                   <span className="text-green-400/60">M: Toggle Mode</span>
+                  <span className="text-red-400/60">Enter: Cleanup</span>
                 </div>
               </div>
 
@@ -299,12 +315,51 @@ const TerminalSimulation = () => {
               ))}
             </motion.div>
           )}
+
+          {activeTab === 4 && (
+            <motion.div 
+              key="launchpad"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="space-y-4"
+            >
+              <div className="flex items-center gap-3 text-indigo-400 mb-6 bg-indigo-500/10 p-4 rounded-xl border border-indigo-500/20">
+                <Rocket className="w-5 h-5" />
+                <span className="text-sm font-bold uppercase tracking-wider">Project Launchpad - Fuzzy Search</span>
+              </div>
+              <div className="bg-black/40 border border-white/10 p-3 rounded-lg flex items-center gap-3 mb-4">
+                <span className="text-primary">{">"}</span>
+                <span className="text-foreground font-mono animate-pulse">vo_</span>
+              </div>
+              {[
+                { name: "void-engine", path: "~/Projects/games/void-engine", type: "Rust" },
+                { name: "voip-service", path: "~/Projects/work/voip-service", type: "Go" },
+              ].map((proj, i) => (
+                <div key={i} className="flex items-center justify-between p-3 rounded-lg border border-white/5 text-xs font-mono group hover:border-primary/30 transition-all cursor-pointer">
+                  <div className="flex items-center gap-4">
+                    <span className="text-muted-foreground/40">0{i+1}</span>
+                    <span className="text-primary font-bold">{proj.name}</span>
+                    <span className="text-foreground/50 text-[10px] hidden sm:inline">{proj.path}</span>
+                  </div>
+                  <span className="text-accent text-[10px] uppercase tracking-widest bg-accent/10 px-2 py-1 rounded">{proj.type}</span>
+                </div>
+              ))}
+              
+              <div className="mt-8 pt-4 border-t border-white/5 text-[9px] sm:text-[11px] text-muted-foreground/50 flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3 uppercase tracking-widest font-bold">
+                <span className="text-primary/60">↑/↓: Nav</span>
+                <span className="text-primary/60 hidden sm:inline">Space: Select</span>
+                <span className="text-indigo-400/60">O: Open Editor</span>
+                <span className="text-indigo-400/60">T: Open Terminal</span>
+              </div>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
 
       {/* Keyboard Hint */}
       <div className="mt-4 text-center">
-        <span className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.4em]">Press 1, 2, or 3 to switch views</span>
+        <span className="text-[10px] text-muted-foreground/40 uppercase tracking-[0.4em]">Press 1, 2, 3, or 4 to switch views</span>
       </div>
     </div>
   );

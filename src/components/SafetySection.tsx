@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { GitBranch, Lock, Trash2, ShieldCheck, AlertCircle, CheckCircle2, XCircle } from "lucide-react";
+import { GitBranch, Lock, Trash2, ShieldCheck, AlertCircle, CheckCircle2, XCircle, Activity } from "lucide-react";
 
 const pillars = [
   {
@@ -9,6 +9,13 @@ const pillars = [
     description: "Before Kessler flags any folder, it queries 'git ls-files'. If a folder contains files actively tracked by version control, Kessler immediately aborts and ignores it.",
     color: "text-primary",
     bg: "bg-primary/10"
+  },
+  {
+    icon: Activity,
+    title: "Active Project Protection",
+    description: "Kessler checks running processes and warns you if you try to clean a project while its dev server is still running. No more accidental mid-dev deletions.",
+    color: "text-orange-400",
+    bg: "bg-orange-400/10"
   },
   {
     icon: Lock,
@@ -31,7 +38,7 @@ const SafetySection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative z-10 py-32 px-4 overflow-hidden">
+    <section className="relative z-10 py-32 px-4 overflow-x-clip">
       {/* Decorative background effects */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-green-500/5 rounded-full blur-[120px] pointer-events-none" />
       
@@ -53,7 +60,7 @@ const SafetySection = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
           {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
             return (

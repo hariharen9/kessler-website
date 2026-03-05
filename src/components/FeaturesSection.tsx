@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { 
   GitBranch, Eye, EyeOff, ShieldCheck, FolderTree, 
   Zap, Brain, Trash2, Palette, Settings, Gauge, 
-  Cpu, Lock, Search, Target
+  Cpu, Lock, Search, Target, Activity, Rocket
 } from "lucide-react";
 
 const FeaturesSection = () => {
@@ -50,22 +50,36 @@ const FeaturesSection = () => {
     },
     {
       title: "Custom Rules",
-      desc: "Extend the built-in engine with your own project-specific rules.yaml.",
+      desc: "Extend the engine with your own rules.yaml. Custom targets automatically merge with default rules.",
       icon: Settings,
       className: "md:col-span-1 md:row-span-1 bg-white/5 border-white/10",
       iconColor: "text-orange-400",
     },
     {
-      title: "Deep Scan",
-      desc: "Finds hidden ignored directories deep within nested monorepos.",
+      title: ".gitignore Intelligence",
+      desc: "Finds hidden ignored directories via git ls-files. Safely filters out secrets and config files.",
       icon: Search,
       className: "md:col-span-1 md:row-span-1 bg-white/5 border-white/10",
       iconColor: "text-blue-400",
     },
+    {
+      title: "Environmental Doctor",
+      desc: "Identifies and cleans unused versions of toolchains (Node.js, Rust, Python, Ruby, Java).",
+      icon: Activity,
+      className: "md:col-span-2 md:row-span-1 bg-white/5 border-white/10",
+      iconColor: "text-green-400",
+    },
+    {
+      title: "Project Launchpad",
+      desc: "Fuzzy-search and instantly open projects in VS Code, Cursor, or Terminal right from the TUI.",
+      icon: Rocket,
+      className: "md:col-span-2 md:row-span-1 bg-white/5 border-white/10",
+      iconColor: "text-indigo-400",
+    },
   ];
 
   return (
-    <section id="features" className="relative z-10 py-32 px-4 overflow-hidden">
+    <section id="features" className="relative z-10 py-32 px-4 overflow-x-clip">
       <div className="max-w-6xl mx-auto">
         
         {/* Header */}

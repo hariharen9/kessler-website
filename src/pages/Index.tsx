@@ -5,7 +5,7 @@ import OrbitalScene from "@/components/OrbitalScene";
 import FeaturesSection from "@/components/FeaturesSection";
 import EcosystemSection from "@/components/EcosystemSection";
 import InstallSection from "@/components/InstallSection";
-// import FAQSection from "@/components/FAQSection";
+import FAQSection from "@/components/FAQSection";
 import SafetySection from "@/components/SafetySection";
 import ComparisonChart from "@/components/ComparisonChart";
 import FooterSection from "@/components/FooterSection";
@@ -20,7 +20,7 @@ const Index = () => {
       <FeaturesSection />
       <EcosystemSection />
       <InstallSection />
-      {/* <FAQSection /> */}
+      <FAQSection />
       <SafetySection />
       <ComparisonChart />
       <FooterSection />

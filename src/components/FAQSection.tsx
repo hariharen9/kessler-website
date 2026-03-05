@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     question: "How is this different from manually deleting node_modules?",
-    answer: "Kessler scans your entire system for artifacts across 10+ ecosystems, respects .gitignore rules, and provides a TUI to review before cleanup."
+    answer: "Kessler scans your entire system for artifacts across 30+ ecosystems, respects .gitignore rules, and provides a TUI to review before cleanup."
   },
   {
     question: "Will it delete my source code?",
@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     question: "What ecosystems are supported?",
-    answer: "10+ ecosystems: Node.js, Python, Rust, Go, Java/JVM, .NET, PHP, Ruby, Elixir, and Terraform."
+    answer: "30+ ecosystems: Node.js, Python, Rust, Go, Java/JVM, .NET, PHP, Ruby, Elixir, and Terraform."
   },
   {
     question: "Can I undo a cleanup?",
