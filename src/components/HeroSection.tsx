@@ -87,7 +87,21 @@ const HeroSection = () => {
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Blazingly Fast</span>
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-accent/30 bg-accent/10 text-accent text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Git-Aware</span>
             <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">Zero Risk</span>
-            <span className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-white/10 bg-white/5 text-white/70 text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap">30+ Ecosystems</span>
+            <motion.span 
+              animate={{ 
+                boxShadow: ["0 0 0px hsl(var(--primary) / 0)", "0 0 15px hsl(var(--primary) / 0.4)", "0 0 0px hsl(var(--primary) / 0)"],
+                borderColor: ["rgba(125,86,244,0.3)", "rgba(125,86,244,0.8)", "rgba(125,86,244,0.3)"]
+              }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="px-2 py-1 sm:px-3 sm:py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest whitespace-nowrap relative overflow-hidden group/pill"
+            >
+              <span className="relative z-10">30+ Ecosystems</span>
+              <motion.span 
+                animate={{ x: ["-100%", "200%"] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear", delay: 1 }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12"
+              />
+            </motion.span>
           </div>
         </motion.div>
 

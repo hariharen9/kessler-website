@@ -89,7 +89,7 @@ const FooterSection = () => {
         </motion.div>
 
         {/* Footer columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mb-12">
           {/* Brand */}
           <div className="sm:col-span-2 md:col-span-1">
             <div className="flex items-center gap-2 mb-3">
@@ -147,16 +147,6 @@ const FooterSection = () => {
             </ul>
           </div>
 
-          {/* Install */}
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider font-display">Install via</h4>
-            <ul className="space-y-2 text-sm text-muted-foreground">
-              <li className="font-mono text-[10px] text-primary/80">npm i -g kessler</li>
-              <li className="font-mono text-[10px] text-primary/80">brew install kessler</li>
-              <li className="font-mono text-[10px] text-primary/80">go install …@latest</li>
-              <li className="font-mono text-[10px] text-primary/80">scoop install kessler</li>
-            </ul>
-          </div>
         </div>
 
         {/* Divider */}
