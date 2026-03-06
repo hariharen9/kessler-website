@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
-export const SmoothScroll = () => {
+const SmoothScroll = () => {
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -28,3 +28,5 @@ export const SmoothScroll = () => {
 
   return null;
 };
+
+export default SmoothScroll;

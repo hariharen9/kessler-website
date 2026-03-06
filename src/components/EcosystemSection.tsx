@@ -409,24 +409,40 @@ const EcosystemSection = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mt-20">
             <div className="glass p-8 rounded-[2rem] border-white/5">
               <h4 className="text-xl font-black uppercase tracking-tight text-foreground mb-4 flex items-center gap-3">
-                <span className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400">01</span>
+                <span className="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center text-green-400 text-sm">01</span>
                 The Local Rings
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Standard cleanup for 30+ ecosystems including Node, Rust, Go, Python, C++, and Flutter. Kessler intelligently finds <code className="text-primary font-mono text-xs">node_modules</code>, <code className="text-primary font-mono text-xs">target/</code>, and <code className="text-primary font-mono text-xs">__pycache__</code> across your entire drive.
+                Standard cleanup for 30+ ecosystems including Node, Rust, and Go. Kessler intelligently finds <code className="text-primary font-mono text-xs">node_modules</code> and <code className="text-primary font-mono text-xs">target/</code> across your entire drive.
               </p>
             </div>
-            <div className="glass p-8 rounded-[2rem] border-white/5 shadow-[0_0_50px_rgba(125,86,244,0.05)]">
+            <div className="glass p-8 rounded-[2rem] border-white/5">
               <h4 className="text-xl font-black uppercase tracking-tight text-foreground mb-4 flex items-center gap-3">
-                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">02</span>
+                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary text-sm">02</span>
                 The Global Ring
               </h4>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                The differentiator. Kessler reaches into Docker images, Homebrew bottles, Nix store paths, Vagrant boxes, and global package caches. It’s the only tool that manages the "Invisible Junk" of modern devops.
+                The differentiator. Kessler reaches into Docker images, Homebrew bottles, and global package caches. It manages the "Invisible Junk" of modern devops.
               </p>
+            </div>
+            <div className="glass p-8 rounded-[2rem] border-white/10 bg-white/5 md:col-span-2 lg:col-span-1">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="text-xl font-black uppercase tracking-tight text-foreground flex items-center gap-3">
+                  <span className="w-8 h-8 rounded-lg bg-accent/10 flex items-center justify-center text-accent text-sm">03</span>
+                  Custom Logic
+                </h4>
+                <span className="text-[10px] font-mono text-accent/60 font-bold uppercase tracking-widest">rules.yaml</span>
+              </div>
+              <div className="bg-black/40 p-4 rounded-xl border border-white/5 font-mono text-[10px] text-accent/80 leading-relaxed overflow-x-auto">
+                <div className="text-white/40"># Define your own targets</div>
+                <div><span className="text-accent">rules:</span></div>
+                <div className="pl-4"><span className="text-accent">- name:</span> "My Custom Stack"</div>
+                <div className="pl-8"><span className="text-accent">trigger:</span> "custom.config"</div>
+                <div className="pl-8"><span className="text-accent">target:</span> ["tmp/", "logs/"]</div>
+              </div>
             </div>
           </div>
         </div>

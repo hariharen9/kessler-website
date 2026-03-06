@@ -15,7 +15,16 @@ const pillars = [
     title: "Active Project Protection",
     description: "Kessler checks running processes and warns you if you try to clean a project while its dev server is still running. No more accidental mid-dev deletions.",
     color: "text-orange-400",
-    bg: "bg-orange-400/10"
+    bg: "bg-orange-400/10",
+    gadget: (
+      <div className="mt-4 flex items-center gap-2 bg-orange-400/5 border border-orange-400/10 p-2 rounded-lg">
+        <div className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-400"></span>
+        </div>
+        <span className="text-[8px] font-mono text-orange-400 font-bold uppercase tracking-widest">PID: 48291 (Vite) ACTIVE</span>
+      </div>
+    )
   },
   {
     icon: Lock,
@@ -76,6 +85,7 @@ const SafetySection = () => {
                 </div>
                 <h3 className="text-xl font-black uppercase tracking-tight text-foreground mb-4">{pillar.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed font-medium">{pillar.description}</p>
+                {pillar.gadget && pillar.gadget}
               </motion.div>
             );
           })}
