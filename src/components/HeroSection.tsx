@@ -1,8 +1,13 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Terminal, Github, ArrowDown, Zap, Shield, Cpu, Sparkles } from "lucide-react";
+import { Terminal, Github, ArrowDown, Zap, Shield, Cpu, Sparkles, Globe, Linkedin } from "lucide-react";
 import { useState, useEffect } from "react";
 import TerminalSimulation from "./TerminalSimulation";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 const HeroSection = () => {
   const [copied, setCopied] = useState(false);
@@ -50,8 +55,33 @@ const HeroSection = () => {
           className="inline-flex items-center gap-2 glass rounded-full px-3 py-1 sm:px-4 sm:py-1.5 mb-6 sm:mb-8"
         >
           <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-primary animate-pulse" />
-          <span className="text-[8px] sm:text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase">
-            Modern Cosmic Cleanup Engine
+          <span className="text-[8px] sm:text-[10px] font-bold text-muted-foreground tracking-[0.2em] uppercase flex items-center gap-1.5">
+            Cosmic Cleanup Engine 
+            <span className="text-white/30 px-1">|</span> 
+            <span className="normal-case tracking-normal font-medium text-muted-foreground/80 flex items-center relative group/author">
+              by&nbsp;&nbsp;
+              <a href="https://hariharen.site" target="_blank" rel="noopener noreferrer" className="text-foreground hover:text-primary transition-colors font-bold underline decoration-primary/30 underline-offset-4">
+                Hariharen
+              </a>
+              
+              {/* Custom Hover Popup */}
+              <div className="absolute left-full top-1/2 -translate-y-1/2 pl-4 opacity-0 pointer-events-none group-hover/author:opacity-100 group-hover/author:pointer-events-auto transition-all duration-300 translate-x-[-10px] group-hover/author:translate-x-0 z-50">
+                <div className="glass-strong border border-white/10 rounded-xl p-2 flex items-center gap-2 shadow-2xl relative">
+                  {/* Little pointing arrow */}
+                  <div className="absolute right-full top-1/2 -translate-y-1/2 border-[6px] border-transparent border-r-white/10" />
+                  
+                  <a href="https://hariharen.site" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-primary/20 hover:text-primary hover:border-primary/30 transition-all text-muted-foreground" title="Portfolio">
+                    <Globe className="w-3.5 h-3.5" />
+                  </a>
+                  <a href="https://www.linkedin.com/in/hariharen9/" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#0A66C2]/20 hover:text-[#0A66C2] hover:border-[#0A66C2]/30 transition-all text-muted-foreground" title="LinkedIn">
+                    <Linkedin className="w-3.5 h-3.5" />
+                  </a>
+                  <a href="https://github.com/hariharen9" target="_blank" rel="noopener noreferrer" className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/20 hover:text-white hover:border-white/30 transition-all text-muted-foreground" title="GitHub">
+                    <Github className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </div>
+            </span>
           </span>
         </motion.div>
 
@@ -79,7 +109,7 @@ const HeroSection = () => {
           className="space-y-4 sm:space-y-6 mb-8 sm:mb-10"
         >
           <h2 className="text-2xl sm:text-4xl md:text-5xl px-2 tracking-wide leading-tight" style={{ fontFamily: "'IBM Plex Mono', monospace" }}>
-            Stop drowning in<br className="sm:hidden" /> <span className="text-primary font-normal">digital debris.</span>
+            Stop drowning in<br className="sm:hidden" /> <span className="text-primary font-normal italic">digital debris.</span>
           </h2>
           
           {/* Hooking Tags */}
@@ -111,7 +141,7 @@ const HeroSection = () => {
           transition={{ delay: 0.7, duration: 0.8 }}
           className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-10 sm:mb-12 leading-relaxed font-medium px-4"
         >
-          The intelligent <span className="text-foreground">cosmic cleanup engine</span> that finds and safely sweeps away <span className="text-primary/90 font-bold">development artifacts</span> and <span className="text-primary/90 font-bold">100% regeneratable debris</span> — reclaiming your orbit in milliseconds.
+          The intelligent <span className="text-foreground">cleanup engine</span> that finds and safely sweeps away <span className="text-primary/90 font-bold">development artifacts</span> and <span className="text-primary/90 font-bold">100% regeneratable debris</span> — reclaiming your orbit in milliseconds.
         </motion.p>
 
         {/* CTA Buttons */}

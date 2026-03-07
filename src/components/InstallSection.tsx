@@ -173,25 +173,6 @@ const InstallSection = () => {
                 )}
               </div>
             </motion.div>
-
-            {/* Quick Command Reference */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
-                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">Live TUI</div>
-                <code className="text-xs text-foreground/80 block mb-1">kessler ~/Projects</code>
-                <p className="text-[10px] text-muted-foreground">Interactive dashboard.</p>
-              </div>
-              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
-                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">CI Mode</div>
-                <code className="text-xs text-foreground/80 block mb-1">kessler scan --json</code>
-                <p className="text-[10px] text-muted-foreground">JSON output for automation.</p>
-              </div>
-              <div className="glass p-5 rounded-2xl border-white/5 group hover:border-primary/20 transition-all">
-                <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">Deep Clean</div>
-                <code className="text-xs text-foreground/80 block mb-1">kessler . --deep</code>
-                <p className="text-[10px] text-muted-foreground">Include build outputs.</p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

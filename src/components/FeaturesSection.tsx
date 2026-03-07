@@ -176,6 +176,20 @@ const FeaturesSection = () => {
       iconColor: "text-pink-400",
     },
     {
+      title: "Background Daemon",
+      desc: "Set and forget. A silent background watcher that automatically sweeps stale debris >1GB every week.",
+      icon: Scan,
+      className: "col-span-2 md:col-span-1 bg-white/5 border-white/10",
+      iconColor: "text-orange-400",
+    },
+    {
+      title: "Community Rules",
+      desc: "Fetch crowd-sourced cleanup rules for exotic frameworks via 'kessler rules update'.",
+      icon: Search,
+      className: "col-span-2 sm:col-span-1 bg-white/5 border-white/10",
+      iconColor: "text-green-400",
+    },
+    {
       title: "CI/CD Ready",
       desc: "Native JSON output and headless flags for automated cleanup in build pipelines.",
       icon: Rocket,

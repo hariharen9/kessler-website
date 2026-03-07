@@ -11,6 +11,7 @@ import ComparisonChart from "@/components/ComparisonChart";
 import FooterSection from "@/components/FooterSection";
 import TerminalSimulation from "@/components/TerminalSimulation";
 import BenchmarkSection from "@/components/BenchmarkSection";
+import UsageSection from "@/components/UsageSection";
 import SmoothScroll from "@/components/SmoothScroll";
 
 const Index = () => {
@@ -43,6 +44,9 @@ const Index = () => {
         
         {/* Acquisition */}
         <InstallSection />
+        
+        {/* Quick Reference */}
+        <UsageSection />
         
         {/* Objections / Support */}
         <FAQSection />
