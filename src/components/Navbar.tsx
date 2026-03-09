@@ -35,6 +35,7 @@ const Navbar = () => {
 
         <div className="hidden sm:flex items-center gap-8 text-sm font-medium text-muted-foreground">
           <a href="#features" onClick={(e) => scrollToSection(e, '#features')} className="hover:text-primary transition-colors" title="Kessler Features">Features</a>
+          <a href="#vscode" onClick={(e) => scrollToSection(e, '#vscode')} className="hover:text-blue-400 transition-colors" title="VS Code Extension">VS Code</a>
           <a href="#install" onClick={(e) => scrollToSection(e, '#install')} className="hover:text-primary transition-colors" title="How to Install Kessler">Install</a>
           <a href="https://github.com/hariharen9/kessler#-usage" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors" title="Kessler Documentation">Docs</a>
         </div>

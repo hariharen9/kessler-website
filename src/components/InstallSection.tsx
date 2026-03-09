@@ -1,15 +1,25 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState } from "react";
-import { Check, Copy, Apple, Wind, Terminal, Package, Box, Download, ArrowRight } from "lucide-react";
+import { Check, Copy, Apple, Wind, Terminal, Package, Box, Download, ArrowRight, Layout, ExternalLink } from "lucide-react";
 import { SiGo } from "react-icons/si";
 
 const installMethods = [
+  { 
+    id: "vscode",
+    label: "VS Code", 
+    icon: Layout,
+    command: "https://marketplace.visualstudio.com/items?itemName=hariharen.kessler-vscode",
+    note: "Official Extension for VS Code",
+    platform: "IDE Marketplace",
+    isLink: true
+  },
   { 
     id: "brew",
     label: "Homebrew", 
     icon: Apple,
     command: "brew tap hariharen9/tap && brew install kessler",
-    platform: "macOS / Linux"
+    platform: "macOS / Linux",
+    isLink: false
   },
   { 
     id: "npm",
@@ -17,21 +27,24 @@ const installMethods = [
     icon: Package,
     command: "npm install -g kessler-cli", 
     alt: "npx kessler-cli ~/Projects",
-    platform: "Node.js (Cross-platform)"
+    platform: "Node.js (Cross-platform)",
+    isLink: false
   },
   { 
     id: "go",
     label: "Go", 
     icon: SiGo,
     command: "go install github.com/hariharen9/kessler@latest",
-    platform: "Developer (Go installed)"
+    platform: "Developer (Go installed)",
+    isLink: false
   },
   { 
     id: "scoop",
     label: "Scoop", 
     icon: Wind,
     command: "scoop bucket add hariharen9 https://github.com/hariharen9/scoop-bucket && scoop install kessler",
-    platform: "Windows"
+    platform: "Windows",
+    isLink: false
   },
   { 
     id: "apt",
@@ -39,12 +52,27 @@ const installMethods = [
     icon: Box,
     command: "sudo dpkg -i kessler_*.deb",
     note: "Download .deb from releases",
-    platform: "Ubuntu / Debian"
+    platform: "Ubuntu / Debian",
+    isLink: false
   },
 ];
 
-const CopyButton = ({ text }: { text: string }) => {
+const CopyButton = ({ text, isLink }: { text: string; isLink?: boolean }) => {
   const [copied, setCopied] = useState(false);
+  
+  if (isLink) {
+    return (
+      <a 
+        href={text}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="p-2 rounded-lg transition-all duration-300 border bg-blue-500/10 border-blue-500/30 text-blue-400 hover:bg-blue-500/20"
+      >
+        <ExternalLink className="w-4 h-4" />
+      </a>
+    );
+  }
+
   const handleCopy = () => {
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -87,7 +115,7 @@ const InstallSection = () => {
             <span className="text-gradient-accent">Deploy</span> in seconds
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Binary distribution for every major platform. Reclaim your space with zero friction.
+            Native binaries and editor extensions for every major platform.
           </p>
         </motion.div>
 
@@ -103,11 +131,11 @@ const InstallSection = () => {
                   onClick={() => setActive(i)}
                   className={`flex items-center gap-4 px-5 py-4 rounded-2xl border transition-all duration-300 text-left group ${
                     active === i
-                      ? "bg-accent/10 border-accent/30 text-accent shadow-lg shadow-accent/5"
+                      ? method.id === 'vscode' ? "bg-blue-500/10 border-blue-500/30 text-blue-400 shadow-lg shadow-blue-500/5" : "bg-accent/10 border-accent/30 text-accent shadow-lg shadow-accent/5"
                       : "bg-white/5 border-white/5 text-muted-foreground hover:bg-white/10 hover:border-white/10"
                   }`}
                 >
-                  <div className={`p-2 rounded-xl transition-colors ${active === i ? "bg-accent/20 text-accent" : "bg-white/5 text-muted-foreground group-hover:text-foreground"}`}>
+                  <div className={`p-2 rounded-xl transition-colors ${active === i ? method.id === 'vscode' ? "bg-blue-500/20 text-blue-400" : "bg-accent/20 text-accent" : "bg-white/5 text-muted-foreground group-hover:text-foreground"}`}>
                     <Icon className="w-5 h-5" />
                   </div>
                   <div>
@@ -136,7 +164,7 @@ const InstallSection = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-white/10" />
                 </div>
                 <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest">
-                  Installation — {installMethods[active].label}
+                  {installMethods[active].isLink ? "Marketplace" : "Installation"} — {installMethods[active].label}
                 </div>
                 <div className="w-10" />
               </div>
@@ -146,14 +174,27 @@ const InstallSection = () => {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between gap-4">
                     <div className="font-mono text-sm sm:text-base break-all">
-                      <span className="text-accent mr-3 select-none">$</span>
-                      <span className="text-foreground/90">{installMethods[active].command}</span>
+                      {installMethods[active].isLink ? (
+                        <a 
+                          href={installMethods[active].command} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:underline flex items-center gap-2"
+                        >
+                          {installMethods[active].command}
+                        </a>
+                      ) : (
+                        <>
+                          <span className="text-accent mr-3 select-none">$</span>
+                          <span className="text-foreground/90">{installMethods[active].command}</span>
+                        </>
+                      )}
                     </div>
-                    <CopyButton text={installMethods[active].command} />
+                    <CopyButton text={installMethods[active].command} isLink={installMethods[active].isLink} />
                   </div>
                   
                   {installMethods[active].note && (
-                    <div className="text-[11px] text-accent/60 italic font-medium bg-accent/5 p-2 rounded-lg border border-accent/10 inline-block">
+                    <div className={`text-[11px] italic font-medium p-2 rounded-lg border inline-block ${installMethods[active].id === 'vscode' ? 'text-blue-400/60 bg-blue-500/5 border-blue-500/10' : 'text-accent/60 bg-accent/5 border-accent/10'}`}>
                       Note: {installMethods[active].note}
                     </div>
                   )}

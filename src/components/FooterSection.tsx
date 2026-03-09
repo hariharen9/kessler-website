@@ -59,6 +59,11 @@ const FooterSection = () => {
             <h4 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider font-display">Product</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><a href="#features" className="hover:text-primary transition-colors">Features</a></li>
+              <li>
+                <a href="https://github.com/hariharen9/kessler-extension" target="_blank" rel="noopener noreferrer" className="hover:text-blue-400 transition-colors inline-flex items-center gap-1">
+                  VS Code Extension <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
               <li><a href="#install" className="hover:text-primary transition-colors">Installation</a></li>
               <li>
                 <a href="https://www.buymeacoffee.com/hariharen" target="_blank" rel="noopener noreferrer" className="text-accent/80 hover:text-accent transition-colors inline-flex items-center gap-1.5 font-medium">

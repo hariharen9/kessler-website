@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import OrbitalScene from "@/components/OrbitalScene";
 import FeaturesSection from "@/components/FeaturesSection";
+import VSCodeExtensionSection from "@/components/VSCodeExtensionSection";
 import EcosystemSection from "@/components/EcosystemSection";
 import InstallSection from "@/components/InstallSection";
 import FAQSection from "@/components/FAQSection";
@@ -29,6 +30,9 @@ const Index = () => {
         
         {/* Features / Capabilities */}
         <FeaturesSection />
+
+        {/* VS Code Extension */}
+        <VSCodeExtensionSection />
         
         {/* Breadth / Reach */}
         <EcosystemSection />
