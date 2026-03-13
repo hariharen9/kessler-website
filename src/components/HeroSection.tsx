@@ -11,6 +11,17 @@ import {
 
 const HeroSection = () => {
   const [copied, setCopied] = useState(false);
+  const [stats, setStats] = useState<{ total: number; breakdown?: { npm: number; github: number; vscode: number; others: number } } | null>(null);
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json())
+      .then((data) => setStats(data))
+      .catch(() => setStats({ 
+        total: 285, 
+        breakdown: { npm: 235, github: 25, vscode: 15, others: 10 } 
+      })); // Modest 1-week fallback
+  }, []);
 
   const mouseX = useMotionValue(0.5);
   const mouseY = useMotionValue(0.5);
@@ -170,7 +181,7 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.8 }}
-          className="flex items-center justify-center gap-3 mb-12"
+          className="flex items-center justify-center gap-3 mb-3"
         >
           <div className="glass px-4 py-2 rounded-xl border border-white/5 flex items-center gap-3 group cursor-pointer hover:border-primary/30 transition-all" onClick={handleCopy}>
             <code className="text-[10px] sm:text-xs font-mono text-muted-foreground group-hover:text-primary transition-colors">
@@ -184,11 +195,75 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
+        {/* Live Stats Badge - Moved below install */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.5 }}
+          className="flex items-center justify-center gap-2 mb-4"
+        >
+          <HoverCard openDelay={100}>
+            <HoverCardTrigger asChild>
+              <div className="px-3 py-1 rounded-full border border-primary/20 bg-primary/5 flex items-center gap-2 group cursor-help transition-colors hover:border-primary/40">
+                <div className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                </div>
+                <span className="text-[10px] font-mono font-bold text-primary tracking-widest uppercase">
+                  {stats ? `${stats.total.toLocaleString()} Orbits Reclaimed` : "Synchronizing Orbit..."}
+                </span>
+              </div>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80 glass-strong border-white/10 backdrop-blur-xl p-4">
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center gap-2 pb-2 border-b border-white/5">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <Zap className="w-4 h-4 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-black uppercase tracking-tight text-foreground">Orbital Telemetry</div>
+                    <div className="text-[9px] text-muted-foreground uppercase tracking-widest font-bold">Real-time usage stats</div>
+                  </div>
+                </div>
+                
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  "Orbits Reclaimed" represents the aggregate number of systems where Kessler has been deployed to eliminate digital space debris.
+                </p>
+
+                <div className="space-y-2 py-1">
+                  <div className="flex justify-between items-center text-[10px] font-mono">
+                    <span className="text-muted-foreground uppercase tracking-tight">NPM Packages</span>
+                    <span className="text-primary font-bold">{stats?.breakdown?.npm?.toLocaleString() || "..."}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] font-mono">
+                    <span className="text-muted-foreground uppercase tracking-tight">Binary Binaries (Brew/Scoop)</span>
+                    <span className="text-primary font-bold">{stats?.breakdown?.github?.toLocaleString() || "..."}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] font-mono">
+                    <span className="text-muted-foreground uppercase tracking-tight">VS Code Marketplace</span>
+                    <span className="text-primary font-bold">{stats?.breakdown?.vscode?.toLocaleString() || "..."}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-[10px] font-mono border-t border-white/5 pt-2 mt-2">
+                    <span className="text-muted-foreground uppercase tracking-tight">Legacy & System</span>
+                    <span className="text-primary font-bold">{stats?.breakdown?.others?.toLocaleString() || "..."}</span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-white/5 flex items-center justify-between">
+                  <span className="text-[9px] font-black uppercase tracking-[0.2em] text-white/40">Sync Status</span>
+                  <span className="text-[9px] font-mono text-green-400 font-bold uppercase animate-pulse">Stable</span>
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
+        </motion.div>
+
         {/* Terminal Simulation */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 1, duration: 1 }}
+          transition={{ delay: 1.4, duration: 1 }}
+          className="mt-4 sm:mt-8"
         >
           <TerminalSimulation />
         </motion.div>

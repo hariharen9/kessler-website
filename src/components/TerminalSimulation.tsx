@@ -68,7 +68,7 @@ const TerminalSimulation = () => {
   const filteredProjects = mode === "safe" ? projects.filter(p => !p.isDeep) : projects;
 
   return (
-    <div className="w-full max-w-5xl mx-auto mt-8 sm:mt-16 relative group px-2 sm:px-0">
+    <div className="w-full max-w-5xl mx-auto relative group px-2 sm:px-0">
       <div className="absolute -bottom-10 left-0 right-0 text-center">
         <p className="text-[10px] text-muted-foreground font-medium italic opacity-60">
           "Customizable Aggression. Daily tidying with <span className="text-green-400">Safe Mode</span>, full system reset with <span className="text-primary">Deep Mode</span>."
